@@ -1,0 +1,593 @@
+[gd_resource type="Resource" script_class="NodeScriptResource" load_steps=2 format=3 uid="uid://cfg4telvdopxn"]
+
+[ext_resource type="Script" uid="uid://dj3n2nc47gi02" path="res://addons/nodescript/core/nodescript_resource.gd" id="1_2cr0k"]
+
+[resource]
+script = ExtResource("1_2cr0k")
+meta = {
+"class_name": "",
+"doc": "",
+"extends": "CharacterBody2D",
+"tool": false
+}
+body = {
+"classes": [{
+"def_line": 30,
+"extends": "",
+"name": "character",
+"region": "test_3",
+"scope_line": 0
+}, {
+"def_line": 36,
+"extends": "",
+"name": "test",
+"region": "",
+"scope_line": 0
+}],
+"enums": {
+"State": {
+"class": "",
+"name": "State",
+"region": "Player",
+"scope_line": 0,
+"values": ["IDLE", "RUN", "JUMP", "FALL"]
+}
+},
+"functions": [{
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	# Initialize",
+"type": "raw"
+}, {
+"text": "	animation.play(\"idle\")",
+"type": "raw"
+}, {
+"text": "	emit_signal(\"health_changed\", health, max_health)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 49,
+"name": "_ready",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_handle_input(delta)",
+"type": "raw"
+}, {
+"text": "	_apply_state(delta)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 54,
+"name": "_process",
+"parameters": [{
+"default": "",
+"name": "delta",
+"type": "float"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var x := Input.get_action_strength(\"ui_right\") - Input.get_action_strength(\"ui_left\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if x != 0:",
+"type": "raw"
+}, {
+"text": "		velocity.x = x * move_speed",
+"type": "raw"
+}, {
+"text": "		state = State.RUN",
+"type": "raw"
+}, {
+"text": "	else:",
+"type": "raw"
+}, {
+"text": "		velocity.x = 0",
+"type": "raw"
+}, {
+"text": "		state = State.IDLE",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if Input.is_action_just_pressed(\"ui_accept\"):",
+"type": "raw"
+}, {
+"text": "		_jump()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 58,
+"name": "_handle_input",
+"parameters": [{
+"default": "",
+"name": "_delta",
+"type": "float"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	match state:",
+"type": "raw"
+}, {
+"text": "		State.IDLE:",
+"type": "raw"
+}, {
+"text": "			animation.play(\"idle\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "		State.RUN:",
+"type": "raw"
+}, {
+"text": "			animation.play(\"run\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "		_:",
+"type": "raw"
+}, {
+"text": "			animation.play(\"idle\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 71,
+"name": "_apply_state",
+"parameters": [{
+"default": "",
+"name": "_delta",
+"type": "float"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if is_on_floor():",
+"type": "raw"
+}, {
+"text": "		velocity.y = -350",
+"type": "raw"
+}, {
+"text": "		state = State.JUMP",
+"type": "raw"
+}, {
+"text": "		animation.play(\"jump\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 82,
+"name": "_jump",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if health <= 0:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	health -= amount",
+"type": "raw"
+}, {
+"text": "	emit_signal(\"health_changed\", health, max_health)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if health <= 0:",
+"type": "raw"
+}, {
+"text": "		emit_signal(\"died\")",
+"type": "raw"
+}, {
+"text": "		animation.play(\"death\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 88,
+"name": "take_damage",
+"parameters": [{
+"default": "",
+"name": "amount",
+"type": "int"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}],
+"order": {
+"test|": [{
+"code": "#region test_2",
+"count": 1,
+"indent": 4,
+"line": 37,
+"name": "test_2",
+"type": "region"
+}],
+"|": [{
+"code": "signal died",
+"indent": 0,
+"line": 3,
+"name": "died",
+"type": "signal"
+}, {
+"auto_spacing": false,
+"count": 8,
+"indent": 0,
+"line": 4,
+"manual_blank": true,
+"name": "blank_1",
+"type": "blank"
+}, {
+"code": "@onready var animation: AnimationPlayer = $AnimationPlayer",
+"indent": 0,
+"line": 12,
+"name": "animation",
+"type": "variable"
+}, {
+"code": "@onready var sprite: Sprite2D = $Sprite",
+"indent": 0,
+"line": 13,
+"name": "sprite",
+"type": "variable"
+}, {
+"code": "#region Player",
+"indent": 0,
+"line": 14,
+"name": "Player",
+"type": "region"
+}, {
+"auto_spacing": false,
+"count": 2,
+"indent": 0,
+"line": 21,
+"manual_blank": true,
+"name": "blank_2",
+"type": "blank"
+}, {
+"code": "#region HP",
+"indent": 0,
+"line": 23,
+"name": "HP",
+"type": "region"
+}, {
+"auto_spacing": false,
+"count": 2,
+"indent": 0,
+"line": 27,
+"manual_blank": true,
+"name": "blank_3",
+"type": "blank"
+}, {
+"code": "#region test_3",
+"indent": 0,
+"line": 29,
+"name": "test_3",
+"type": "region"
+}, {
+"auto_spacing": false,
+"count": 2,
+"indent": 0,
+"line": 34,
+"manual_blank": true,
+"name": "blank_4",
+"type": "blank"
+}, {
+"code": "class test:",
+"indent": 0,
+"line": 36,
+"name": "test",
+"type": "class"
+}, {
+"auto_spacing": false,
+"count": 3,
+"indent": 0,
+"line": 39,
+"manual_blank": true,
+"name": "blank_5",
+"type": "blank"
+}, {
+"code": "#region test",
+"indent": 0,
+"line": 43,
+"name": "test",
+"type": "region"
+}, {
+"auto_spacing": false,
+"count": 2,
+"indent": 0,
+"line": 45,
+"manual_blank": true,
+"name": "blank_6",
+"type": "blank"
+}, {
+"code": "signal health_changed(current, max)",
+"indent": 0,
+"line": 47,
+"name": "health_changed",
+"type": "signal"
+}, {
+"auto_spacing": false,
+"count": 1,
+"indent": 0,
+"line": 48,
+"manual_blank": true,
+"name": "blank_7",
+"type": "blank"
+}, {
+"code": "func _ready() -> void:",
+"indent": 0,
+"line": 49,
+"name": "_ready",
+"type": "function"
+}, {
+"code": "func _process(delta: float) -> void:",
+"indent": 0,
+"line": 54,
+"name": "_process",
+"type": "function"
+}, {
+"code": "func _handle_input(_delta: float) -> void:",
+"indent": 0,
+"line": 58,
+"name": "_handle_input",
+"type": "function"
+}, {
+"code": "func _apply_state(_delta: float) -> void:",
+"indent": 0,
+"line": 71,
+"name": "_apply_state",
+"type": "function"
+}, {
+"code": "func _jump() -> void:",
+"indent": 0,
+"line": 82,
+"name": "_jump",
+"type": "function"
+}, {
+"code": "func take_damage(amount: int) -> void:",
+"indent": 0,
+"line": 88,
+"name": "take_damage",
+"type": "function"
+}],
+"|HP": [{
+"code": "@export var max_health: int = 100",
+"indent": 0,
+"line": 24,
+"name": "max_health",
+"type": "variable"
+}, {
+"code": "var health: int = 100",
+"indent": 0,
+"line": 25,
+"name": "health",
+"type": "variable"
+}],
+"|Player": [{
+"code": "@export var move_speed: float = 200.0",
+"indent": 0,
+"line": 15,
+"name": "move_speed",
+"type": "variable"
+}, {
+"code": "enum State {IDLE, RUN, JUMP, FALL}",
+"indent": 0,
+"line": 16,
+"name": "State",
+"type": "enum"
+}, {
+"auto_spacing": false,
+"count": 2,
+"indent": 0,
+"line": 17,
+"manual_blank": true,
+"name": "blank_1",
+"type": "blank"
+}, {
+"code": "var state: State = State.IDLE",
+"indent": 0,
+"line": 19,
+"name": "state",
+"type": "variable"
+}],
+"|test_3": [{
+"code": "class character:",
+"indent": 0,
+"line": 30,
+"name": "character",
+"type": "class"
+}]
+},
+"regions": [{
+"class": "",
+"def_line": 14,
+"name": "Player",
+"region": "",
+"scope_line": 0
+}, {
+"class": "",
+"def_line": 23,
+"name": "HP",
+"region": "",
+"scope_line": 0
+}, {
+"class": "",
+"def_line": 29,
+"name": "test_3",
+"region": "",
+"scope_line": 0
+}, {
+"class": "test",
+"def_line": 37,
+"name": "test_2",
+"region": "",
+"scope_line": 36
+}, {
+"class": "",
+"def_line": 43,
+"name": "test",
+"region": "",
+"scope_line": 0
+}],
+"signals": {
+"died": {
+"class": "",
+"parameters": [],
+"region": "",
+"scope_line": 0
+},
+"health_changed": {
+"class": "",
+"parameters": [{
+"default": "",
+"name": "current",
+"type": ""
+}, {
+"default": "",
+"name": "max",
+"type": ""
+}],
+"region": "",
+"scope_line": 0
+}
+},
+"variables": [{
+"class": "",
+"const": false,
+"export": false,
+"name": "animation",
+"onready": true,
+"region": "",
+"scope_line": 0,
+"type": "AnimationPlayer",
+"value": "$AnimationPlayer"
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "sprite",
+"onready": true,
+"region": "",
+"scope_line": 0,
+"type": "Sprite2D",
+"value": "$Sprite"
+}, {
+"class": "",
+"const": false,
+"export": true,
+"name": "move_speed",
+"onready": false,
+"region": "Player",
+"scope_line": 0,
+"type": "float",
+"value": "200.0"
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "state",
+"onready": false,
+"region": "Player",
+"scope_line": 0,
+"type": "State",
+"value": "State.IDLE"
+}, {
+"class": "",
+"const": false,
+"export": true,
+"name": "max_health",
+"onready": false,
+"region": "HP",
+"scope_line": 0,
+"type": "int",
+"value": "100"
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "health",
+"onready": false,
+"region": "HP",
+"scope_line": 0,
+"type": "int",
+"value": "100"
+}]
+}

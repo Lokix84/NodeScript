@@ -1,0 +1,85 @@
+[gd_scene load_steps=3 format=3 uid="uid://orgselector"]
+
+[ext_resource type="Script" uid="uid://ciqje3buqvykh" path="res://addons/nodescript/ui/org_selector.gd" id="1"]
+[ext_resource type="Theme" uid="uid://bbkufuj4lk7no" path="res://addons/nodescript/ui/styling/node_script_styling.tres" id="2"]
+
+[node name="OrgSelector" type="VBoxContainer"]
+theme = ExtResource("2")
+theme_override_constants/separation = 6
+script = ExtResource("1")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme = ExtResource("2")
+theme_type_variation = &"panel_header"
+
+[node name="OrgHeader" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+theme_type_variation = &"panel_header_text"
+text = "Organization"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OrgSelection" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="RegionRow" type="HBoxContainer" parent="OrgSelection"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RegionLabel" type="Label" parent="OrgSelection/RegionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Region: "
+autowrap_mode = 1
+
+[node name="RegionClear" type="Button" parent="OrgSelection/RegionRow"]
+layout_mode = 2
+text = "Remove"
+
+[node name="ClassRow" type="HBoxContainer" parent="OrgSelection"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ClassLabel" type="Label" parent="OrgSelection/ClassRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Class: "
+autowrap_mode = 1
+
+[node name="ClassClear" type="Button" parent="OrgSelection/ClassRow"]
+layout_mode = 2
+text = "Remove"
+
+[node name="OrgButtons" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="RegionButton" type="Button" parent="OrgButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Assign Region"
+
+[node name="ClassButton" type="Button" parent="OrgButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Assign Class"
+
+[node name="RegionPicker" type="OptionButton" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="ClassPicker" type="OptionButton" parent="."]
+visible = false
+layout_mode = 2

@@ -1,0 +1,513 @@
+[gd_scene load_steps=4 format=3 uid="uid://7e50h1dq6wgt"]
+
+[ext_resource type="Script" uid="uid://cxjiusucpbwls" path="res://addons/nodescript/ui/function_body_editor.gd" id="1"]
+[ext_resource type="Theme" uid="uid://bbkufuj4lk7no" path="res://addons/nodescript/ui/styling/node_script_styling.tres" id="2_4kmn3"]
+[ext_resource type="PackedScene" uid="uid://orgselector" path="res://addons/nodescript/ui/org_selector.tscn" id="3"]
+
+[node name="FunctionBodyEditor" type="ScrollContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+script = ExtResource("1")
+
+[node name="Content" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+split_offset = 220
+
+[node name="LeftPanel" type="VBoxContainer" parent="Content"]
+custom_minimum_size = Vector2(175, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+
+[node name="TreeHeader" type="Label" parent="Content/LeftPanel"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+text = "Function Structure"
+
+[node name="StatementTree" type="Tree" parent="Content/LeftPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+allow_reselect = true
+hide_root = true
+
+[node name="AddPanel" type="VBoxContainer" parent="Content/LeftPanel"]
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="AddLabel" type="Label" parent="Content/LeftPanel/AddPanel"]
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+text = "Add Statement"
+
+[node name="AddButtons" type="FlowContainer" parent="Content/LeftPanel/AddPanel"]
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+
+[node name="AddCommentButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Comment statement"
+
+[node name="AddAssignButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add [b]=[/b] statement"
+text = "[b]=[/b]"
+
+[node name="AddCallButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Call statement"
+
+[node name="AddSignalButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Signal statement"
+
+[node name="AddReturnButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Return statement"
+text = "Return"
+
+[node name="AddMatchButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Match statement"
+text = "Match"
+
+[node name="AddIfButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add If statement"
+text = "If"
+
+[node name="AddElifButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Elif statement"
+text = "Elif"
+
+[node name="AddElseButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Else statement"
+text = "Else"
+
+[node name="AddForButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add For statement"
+text = "For"
+
+[node name="AddWhileButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add While statement"
+text = "While"
+
+[node name="AddPassButton" type="Button" parent="Content/LeftPanel/AddPanel/AddButtons"]
+layout_mode = 2
+tooltip_text = "Add Pass statement"
+text = "pass"
+
+[node name="RightPanel" type="VBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+
+[node name="BlocksContainer" type="VBoxContainer" parent="Content/RightPanel"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+
+[node name="InspectorContainer" type="VBoxContainer" parent="Content/RightPanel"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 6
+
+[node name="HeaderPanel" type="Panel" parent="Content/RightPanel/InspectorContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_4kmn3")
+theme_type_variation = &"panel_header"
+
+[node name="HeaderHBox" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/HeaderPanel"]
+layout_mode = 0
+offset_right = 920.0
+offset_bottom = 23.0
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="HeaderIcon" type="TextureRect" parent="Content/RightPanel/InspectorContainer/HeaderPanel/HeaderHBox"]
+layout_mode = 2
+stretch_mode = 3
+
+[node name="HeaderLabel" type="Label" parent="Content/RightPanel/InspectorContainer/HeaderPanel/HeaderHBox"]
+layout_mode = 2
+text = "Function"
+
+[node name="FunctionForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="FuncHeader" type="Label" parent="Content/RightPanel/InspectorContainer/FunctionForm"]
+layout_mode = 2
+text = "Function Signature"
+
+[node name="FuncNameRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/FunctionForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FuncNameLabel" type="Label" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncNameRow"]
+layout_mode = 2
+text = "Name"
+
+[node name="FuncNameEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncNameRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FuncParamsRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/FunctionForm"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FuncParamsLabel" type="Label" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncParamsRow"]
+layout_mode = 2
+text = "Parameters"
+
+[node name="FuncParamsEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncParamsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "name: Type = default, ..."
+
+[node name="ParamsContainer" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer/FunctionForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="AddParamButton" type="Button" parent="Content/RightPanel/InspectorContainer/FunctionForm/ParamsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Add Parameter"
+
+[node name="FuncReturnRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/FunctionForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FuncReturnLabel" type="Label" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncReturnRow"]
+layout_mode = 2
+text = "Return"
+
+[node name="FuncReturnEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncReturnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "void"
+
+[node name="FuncFlagsRow" type="FlowContainer" parent="Content/RightPanel/InspectorContainer/FunctionForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 4
+
+[node name="FuncStatic" type="CheckBox" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncFlagsRow"]
+layout_mode = 2
+text = "static"
+
+[node name="FuncVirtual" type="CheckBox" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncFlagsRow"]
+layout_mode = 2
+text = "virtual"
+
+[node name="FuncOverride" type="CheckBox" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncFlagsRow"]
+layout_mode = 2
+text = "override"
+
+[node name="FuncVararg" type="CheckBox" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncFlagsRow"]
+layout_mode = 2
+text = "vararg"
+
+[node name="FuncRpc" type="CheckBox" parent="Content/RightPanel/InspectorContainer/FunctionForm/FuncFlagsRow"]
+layout_mode = 2
+text = "rpc"
+
+[node name="OrgSelector" parent="Content/RightPanel/InspectorContainer/FunctionForm" instance=ExtResource("3")]
+theme = null
+
+[node name="CommentForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="CommentHeader" type="Label" parent="Content/RightPanel/InspectorContainer/CommentForm"]
+layout_mode = 2
+text = "Comment"
+
+[node name="CommentText" type="TextEdit" parent="Content/RightPanel/InspectorContainer/CommentForm"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+wrap_mode = 2
+
+[node name="CallForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="CallHeader" type="Label" parent="Content/RightPanel/InspectorContainer/CallForm"]
+layout_mode = 2
+text = "Function Call"
+
+[node name="CallNameRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/CallForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CallNameLabel" type="Label" parent="Content/RightPanel/InspectorContainer/CallForm/CallNameRow"]
+layout_mode = 2
+text = "Callable"
+
+[node name="CallNameEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/CallForm/CallNameRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CallArgs" type="TextEdit" parent="Content/RightPanel/InspectorContainer/CallForm"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Arguments (comma separated)"
+wrap_mode = 2
+
+[node name="SignalForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="SignalHeader" type="Label" parent="Content/RightPanel/InspectorContainer/SignalForm"]
+layout_mode = 2
+text = "Emit Signal"
+
+[node name="SignalNameRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/SignalForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SignalNameLabel" type="Label" parent="Content/RightPanel/InspectorContainer/SignalForm/SignalNameRow"]
+layout_mode = 2
+text = "Signal"
+
+[node name="SignalNameEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/SignalForm/SignalNameRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SignalArgs" type="TextEdit" parent="Content/RightPanel/InspectorContainer/SignalForm"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Arguments (comma separated)"
+wrap_mode = 2
+
+[node name="AssignmentForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="AssignHeader" type="Label" parent="Content/RightPanel/InspectorContainer/AssignmentForm"]
+layout_mode = 2
+text = "Assignment"
+
+[node name="AssignTargetRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/AssignmentForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AssignTargetLabel" type="Label" parent="Content/RightPanel/InspectorContainer/AssignmentForm/AssignTargetRow"]
+layout_mode = 2
+text = "Target"
+
+[node name="AssignTargetEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/AssignmentForm/AssignTargetRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AssignExpr" type="TextEdit" parent="Content/RightPanel/InspectorContainer/AssignmentForm"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Expression"
+wrap_mode = 2
+
+[node name="ReturnForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="ReturnHeader" type="Label" parent="Content/RightPanel/InspectorContainer/ReturnForm"]
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+text = "Return"
+
+[node name="ReturnExpr" type="LineEdit" parent="Content/RightPanel/InspectorContainer/ReturnForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_4kmn3")
+placeholder_text = "value"
+
+[node name="IfForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="IfHeader" type="Label" parent="Content/RightPanel/InspectorContainer/IfForm"]
+layout_mode = 2
+text = "If Statement"
+
+[node name="IfCondition" type="LineEdit" parent="Content/RightPanel/InspectorContainer/IfForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Condition (e.g. x > 0)"
+
+[node name="ElifForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="ElifHeader" type="Label" parent="Content/RightPanel/InspectorContainer/ElifForm"]
+layout_mode = 2
+text = "Elif Statement"
+
+[node name="ElifCondition" type="LineEdit" parent="Content/RightPanel/InspectorContainer/ElifForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Condition"
+
+[node name="ElseForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="ElseHeader" type="Label" parent="Content/RightPanel/InspectorContainer/ElseForm"]
+layout_mode = 2
+text = "Else Statement (no parameters)"
+
+[node name="MatchForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="MatchHeader" type="Label" parent="Content/RightPanel/InspectorContainer/MatchForm"]
+layout_mode = 2
+text = "Match Statement"
+
+[node name="MatchSubject" type="LineEdit" parent="Content/RightPanel/InspectorContainer/MatchForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Expression to match"
+
+[node name="ForForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="ForHeader" type="Label" parent="Content/RightPanel/InspectorContainer/ForForm"]
+layout_mode = 2
+text = "For Loop"
+
+[node name="ForVarRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer/ForForm"]
+layout_mode = 2
+
+[node name="ForVarLabel" type="Label" parent="Content/RightPanel/InspectorContainer/ForForm/ForVarRow"]
+layout_mode = 2
+text = "Variable"
+
+[node name="ForVarEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/ForForm/ForVarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "element"
+
+[node name="ForInLabel" type="Label" parent="Content/RightPanel/InspectorContainer/ForForm/ForVarRow"]
+layout_mode = 2
+text = "in"
+
+[node name="ForIterableEdit" type="LineEdit" parent="Content/RightPanel/InspectorContainer/ForForm/ForVarRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "items"
+
+[node name="WhileForm" type="VBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 4
+
+[node name="WhileHeader" type="Label" parent="Content/RightPanel/InspectorContainer/WhileForm"]
+layout_mode = 2
+text = "While Loop"
+
+[node name="WhileCondition" type="LineEdit" parent="Content/RightPanel/InspectorContainer/WhileForm"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Condition"
+
+[node name="FallbackLabel" type="Label" parent="Content/RightPanel/InspectorContainer"]
+layout_mode = 2
+theme = ExtResource("2_4kmn3")
+text = "Select a statement to view/edit details."
+
+[node name="Spacer" type="Control" parent="Content/RightPanel/InspectorContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_4kmn3")
+
+[node name="ButtonsRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_4kmn3")
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="DedentButton" type="Button" parent="Content/RightPanel/InspectorContainer/ButtonsRow"]
+layout_mode = 2
+tooltip_text = "Unindent (move left)"
+text = "<"
+
+[node name="IndentButton" type="Button" parent="Content/RightPanel/InspectorContainer/ButtonsRow"]
+layout_mode = 2
+tooltip_text = "Indent (move right)"
+text = ">"
+
+[node name="CodeOutputValue" type="Label" parent="Content/RightPanel/InspectorContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_4kmn3")
+
+[node name="ActionButtonsRow" type="HBoxContainer" parent="Content/RightPanel/InspectorContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="DeleteButton" type="Button" parent="Content/RightPanel/InspectorContainer/ActionButtonsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Delete this item"
+text = "Delete"
+
+[node name="UpdateButton" type="Button" parent="Content/RightPanel/InspectorContainer/ActionButtonsRow"]
+layout_mode = 2
+size_flags_horizontal = 3

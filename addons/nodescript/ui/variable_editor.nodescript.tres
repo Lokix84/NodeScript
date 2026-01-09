@@ -1,0 +1,2330 @@
+[gd_resource type="Resource" script_class="NodeScriptResource" load_steps=2 format=3 uid="uid://bgtcxgm0alu5"]
+
+[ext_resource type="Script" uid="uid://dj3n2nc47gi02" path="res://addons/nodescript/core/nodescript_resource.gd" id="1_6nvuv"]
+
+[resource]
+script = ExtResource("1_6nvuv")
+meta = {
+"class_name": "",
+"doc": "",
+"extends": "PanelContainer",
+"tool": false
+}
+body = {
+"classes": [],
+"enums": {},
+"functions": [{
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	name_edit = find_child(\"VariableName\", true, false)",
+"type": "raw"
+}, {
+"text": "	type_button = find_child(\"TypeButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	export_check = find_child(\"ExportCheck\", true, false)",
+"type": "raw"
+}, {
+"text": "	const_check = find_child(\"ConstCheck\", true, false)",
+"type": "raw"
+}, {
+"text": "	onready_check = find_child(\"OnreadyCheck\", true, false)",
+"type": "raw"
+}, {
+"text": "	export_group_edit = find_child(\"ExportGroup\", true, false)",
+"type": "raw"
+}, {
+"text": "	value_edit = find_child(\"ValueField\", true, false)",
+"type": "raw"
+}, {
+"text": "	confirm_button = find_child(\"VarConfirmButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	signature_label = find_child(\"SignaturePreview\", true, false)",
+"type": "raw"
+}, {
+"text": "	header_icon = find_child(\"HeaderIcon\", true, false)",
+"type": "raw"
+}, {
+"text": "	header_title = find_child(\"Title\", true, false)",
+"type": "raw"
+}, {
+"text": "	signature_icon = find_child(\"SignatureIcon\", true, false)",
+"type": "raw"
+}, {
+"text": "	org_selector = find_child(\"OrgSelector\", true, false)",
+"type": "raw"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		if org_selector.has_signal(\"region_changed\") and not org_selector.region_changed.is_connected(_on_org_region_changed):",
+"type": "raw"
+}, {
+"text": "			org_selector.region_changed.connect(_on_org_region_changed)",
+"type": "raw"
+}, {
+"text": "		if org_selector.has_signal(\"class_changed\") and not org_selector.class_changed.is_connected(_on_org_class_changed):",
+"type": "raw"
+}, {
+"text": "			org_selector.class_changed.connect(_on_org_class_changed)",
+"type": "raw"
+}, {
+"text": "		if org_selector.has_signal(\"assign_region_requested\") and not org_selector.assign_region_requested.is_connected(_on_org_assign_region_requested):",
+"type": "raw"
+}, {
+"text": "			org_selector.assign_region_requested.connect(_on_org_assign_region_requested)",
+"type": "raw"
+}, {
+"text": "		if org_selector.has_signal(\"assign_class_requested\") and not org_selector.assign_class_requested.is_connected(_on_org_assign_class_requested):",
+"type": "raw"
+}, {
+"text": "			org_selector.assign_class_requested.connect(_on_org_assign_class_requested)",
+"type": "raw"
+}, {
+"text": "		if org_selector.has_signal(\"cleared_region\") and not org_selector.cleared_region.is_connected(_on_org_cleared_region):",
+"type": "raw"
+}, {
+"text": "			org_selector.cleared_region.connect(_on_org_cleared_region)",
+"type": "raw"
+}, {
+"text": "		if org_selector.has_signal(\"cleared_class\") and not org_selector.cleared_class.is_connected(_on_org_cleared_class):",
+"type": "raw"
+}, {
+"text": "			org_selector.cleared_class.connect(_on_org_cleared_class)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if type_button and not type_button.pressed.is_connected(_on_type_button_pressed):",
+"type": "raw"
+}, {
+"text": "		type_button.pressed.connect(_on_type_button_pressed)",
+"type": "raw"
+}, {
+"text": "	if name_edit:",
+"type": "raw"
+}, {
+"text": "		if not name_edit.text_changed.is_connected(_on_name_text_changed):",
+"type": "raw"
+}, {
+"text": "			name_edit.text_changed.connect(_on_name_text_changed)",
+"type": "raw"
+}, {
+"text": "		if not name_edit.focus_exited.is_connected(_on_name_focus_exited):",
+"type": "raw"
+}, {
+"text": "			name_edit.focus_exited.connect(_on_name_focus_exited)",
+"type": "raw"
+}, {
+"text": "	var delete_button: Button = find_child(\"DeleteButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	if delete_button and not delete_button.pressed.is_connected(_on_delete_pressed):",
+"type": "raw"
+}, {
+"text": "		delete_button.pressed.connect(_on_delete_pressed)",
+"type": "raw"
+}, {
+"text": "	var confirm_button: Button = find_child(\"ConfirmButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	if confirm_button and not confirm_button.pressed.is_connected(_on_confirm_pressed):",
+"type": "raw"
+}, {
+"text": "		confirm_button.pressed.connect(_on_confirm_pressed)",
+"type": "raw"
+}, {
+"text": "	if export_check and not export_check.toggled.is_connected(_on_export_mode_toggled):",
+"type": "raw"
+}, {
+"text": "		export_check.toggled.connect(_on_export_mode_toggled)",
+"type": "raw"
+}, {
+"text": "	if onready_check and not onready_check.toggled.is_connected(_on_onready_mode_toggled):",
+"type": "raw"
+}, {
+"text": "		onready_check.toggled.connect(_on_onready_mode_toggled)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	# Auto-save on focus lost",
+"type": "raw"
+}, {
+"text": "	if not focus_exited.is_connected(_on_editor_focus_exited):",
+"type": "raw"
+}, {
+"text": "		focus_exited.connect(_on_editor_focus_exited)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	_set_header_icon()",
+"type": "raw"
+}, {
+"text": "	_set_signature_icon()",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "	_update_title()",
+"type": "raw"
+}, {
+"text": "	_set_action_icons()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	hide()",
+"type": "raw"
+}, {
+"text": "	_reset_state()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 31,
+"name": "_ready",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_reset_state()",
+"type": "raw"
+}, {
+"text": "	_set_confirm_text(\"Save\")",
+"type": "raw"
+}, {
+"text": "	show()",
+"type": "raw"
+}, {
+"text": "	if name_edit:",
+"type": "raw"
+}, {
+"text": "		name_edit.grab_focus()",
+"type": "raw"
+}, {
+"text": "	_emit_name_changed()",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 91,
+"name": "start_new",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if name_edit:",
+"type": "raw"
+}, {
+"text": "		name_edit.text = str(data.get(\"name\", \"\"))",
+"type": "raw"
+}, {
+"text": "	selected_type = {",
+"type": "raw"
+}, {
+"text": "		\"type\": data.get(\"type\", \"Variant\"),",
+"type": "raw"
+}, {
+"text": "		\"display\": data.get(\"type_label\", data.get(\"type\", \"Variant\"))",
+"type": "raw"
+}, {
+"text": "	}",
+"type": "raw"
+}, {
+"text": "	if export_check:",
+"type": "raw"
+}, {
+"text": "		export_check.button_pressed = data.get(\"export\", false)",
+"type": "raw"
+}, {
+"text": "	if const_check:",
+"type": "raw"
+}, {
+"text": "		const_check.button_pressed = data.get(\"const\", false)",
+"type": "raw"
+}, {
+"text": "	if onready_check:",
+"type": "raw"
+}, {
+"text": "		onready_check.button_pressed = data.get(\"onready\", false)",
+"type": "raw"
+}, {
+"text": "	_enforce_mode_constraints()",
+"type": "raw"
+}, {
+"text": "	if export_group_edit:",
+"type": "raw"
+}, {
+"text": "		export_group_edit.text = str(data.get(\"export_group\", \"\"))",
+"type": "raw"
+}, {
+"text": "	if value_edit:",
+"type": "raw"
+}, {
+"text": "		value_edit.text = str(data.get(\"value\", \"\"))",
+"type": "raw"
+}, {
+"text": "	assigned_region = str(data.get(\"region\", \"\"))",
+"type": "raw"
+}, {
+"text": "	assigned_class = str(data.get(\"class\", \"\"))",
+"type": "raw"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		org_selector.set_selection(assigned_region, assigned_class)",
+"type": "raw"
+}, {
+"text": "	_update_org_rows()",
+"type": "raw"
+}, {
+"text": "	_update_type_button()",
+"type": "raw"
+}, {
+"text": "	_set_confirm_text(\"Save\")",
+"type": "raw"
+}, {
+"text": "	show()",
+"type": "raw"
+}, {
+"text": "	_emit_name_changed()",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 101,
+"name": "show_variable",
+"parameters": [{
+"default": "",
+"name": "data",
+"type": "Dictionary"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	selected_type = {\"type\": \"Variant\", \"display\": \"Variant\"}",
+"type": "raw"
+}, {
+"text": "	if name_edit:",
+"type": "raw"
+}, {
+"text": "		name_edit.text = \"\"",
+"type": "raw"
+}, {
+"text": "	if export_check:",
+"type": "raw"
+}, {
+"text": "		export_check.button_pressed = false",
+"type": "raw"
+}, {
+"text": "	if const_check:",
+"type": "raw"
+}, {
+"text": "		const_check.button_pressed = false",
+"type": "raw"
+}, {
+"text": "	if onready_check:",
+"type": "raw"
+}, {
+"text": "		onready_check.button_pressed = false",
+"type": "raw"
+}, {
+"text": "	_enforce_mode_constraints()",
+"type": "raw"
+}, {
+"text": "	if export_group_edit:",
+"type": "raw"
+}, {
+"text": "		export_group_edit.text = \"\"",
+"type": "raw"
+}, {
+"text": "	if value_edit:",
+"type": "raw"
+}, {
+"text": "		value_edit.text = \"\"",
+"type": "raw"
+}, {
+"text": "	assigned_region = \"\"",
+"type": "raw"
+}, {
+"text": "	assigned_class = \"\"",
+"type": "raw"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		org_selector.set_selection(\"\", \"\")",
+"type": "raw"
+}, {
+"text": "		org_selector.set_lists([], [])",
+"type": "raw"
+}, {
+"text": "	_update_org_rows()",
+"type": "raw"
+}, {
+"text": "	_update_type_button()",
+"type": "raw"
+}, {
+"text": "	_emit_name_changed()",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 131,
+"name": "_reset_state",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if type_info.is_empty():",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	selected_type = type_info.duplicate(true)",
+"type": "raw"
+}, {
+"text": "	_update_type_button()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 157,
+"name": "set_selected_type",
+"parameters": [{
+"default": "",
+"name": "type_info",
+"type": "Dictionary"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if type_button:",
+"type": "raw"
+}, {
+"text": "		type_button.text = \"Type: %s\" % selected_type.get(\"display\", \"Variant\")",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "	_set_header_icon()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 164,
+"name": "_update_type_button",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	emit_signal(\"type_pick_requested\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 171,
+"name": "_on_type_button_pressed",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	hide()",
+"type": "raw"
+}, {
+"text": "	emit_signal(\"delete_requested\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 175,
+"name": "_on_delete_pressed",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var var_name = name_edit.text.strip_edges() if name_edit else \"\"",
+"type": "raw"
+}, {
+"text": "	if var_name == \"\":",
+"type": "raw"
+}, {
+"text": "		push_warning(\"VariableEditor: Name is required.\")",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	if NodeScriptUtils.is_reserved_identifier(var_name):",
+"type": "raw"
+}, {
+"text": "		push_warning(\"VariableEditor: Name cannot be a GDScript keyword.\")",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	var data = {",
+"type": "raw"
+}, {
+"text": "		\"name\": var_name,",
+"type": "raw"
+}, {
+"text": "		\"type\": selected_type.get(\"type\", \"Variant\"),",
+"type": "raw"
+}, {
+"text": "		\"type_label\": selected_type.get(\"display\", \"Variant\"),",
+"type": "raw"
+}, {
+"text": "		\"export\": export_check.button_pressed if export_check else false,",
+"type": "raw"
+}, {
+"text": "		\"const\": const_check.button_pressed if const_check else false,",
+"type": "raw"
+}, {
+"text": "		\"onready\": onready_check.button_pressed if onready_check else false,",
+"type": "raw"
+}, {
+"text": "		\"export_group\": export_group_edit.text.strip_edges() if export_group_edit else \"\",",
+"type": "raw"
+}, {
+"text": "		\"value\": value_edit.text if value_edit else \"\",",
+"type": "raw"
+}, {
+"text": "		\"region\": assigned_region,",
+"type": "raw"
+}, {
+"text": "		\"class\": assigned_class",
+"type": "raw"
+}, {
+"text": "	}",
+"type": "raw"
+}, {
+"text": "	emit_signal(\"submitted\", data)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 180,
+"name": "_on_confirm_pressed",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	# Auto-save on focus loss if name is valid",
+"type": "raw"
+}, {
+"text": "	if name_edit and not name_edit.text.strip_edges().is_empty():",
+"type": "raw"
+}, {
+"text": "		var var_name = name_edit.text.strip_edges()",
+"type": "raw"
+}, {
+"text": "		if not NodeScriptUtils.is_reserved_identifier(var_name):",
+"type": "raw"
+}, {
+"text": "			_on_confirm_pressed()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 203,
+"name": "_on_editor_focus_exited",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_emit_name_changed()",
+"type": "raw"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		org_selector.set_blocked(new_text.strip_edges(), \"\")",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 211,
+"name": "_on_name_text_changed",
+"parameters": [{
+"default": "",
+"name": "new_text",
+"type": "String"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	pass",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 218,
+"name": "_on_region_selected",
+"parameters": [{
+"default": "",
+"name": "index",
+"type": "int"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	pass",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 222,
+"name": "_on_class_selected",
+"parameters": [{
+"default": "",
+"name": "index",
+"type": "int"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		org_selector.set_lists(regions, classes)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 226,
+"name": "set_region_class_lists",
+"parameters": [{
+"default": "",
+"name": "regions",
+"type": "Array"
+}, {
+"default": "",
+"name": "classes",
+"type": "Array"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	assigned_region = region_name.strip_edges()",
+"type": "raw"
+}, {
+"text": "	assigned_class = class_title.strip_edges()",
+"type": "raw"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		org_selector.set_selection(assigned_region, assigned_class)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 231,
+"name": "set_region_class",
+"parameters": [{
+"default": "",
+"name": "region_name",
+"type": "String"
+}, {
+"default": "",
+"name": "class_title",
+"type": "String"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if org_selector:",
+"type": "raw"
+}, {
+"text": "		org_selector.set_selection(assigned_region, assigned_class)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 238,
+"name": "_update_org_rows",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	assigned_region = region_name.strip_edges()",
+"type": "raw"
+}, {
+"text": "	_update_org_rows()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 243,
+"name": "_on_org_region_changed",
+"parameters": [{
+"default": "",
+"name": "region_name",
+"type": "String"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	assigned_class = class_title.strip_edges()",
+"type": "raw"
+}, {
+"text": "	_update_org_rows()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 248,
+"name": "_on_org_class_changed",
+"parameters": [{
+"default": "",
+"name": "class_title",
+"type": "String"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	push_warning(\"No regions available. Add a region first to assign.\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 253,
+"name": "_on_org_assign_region_requested",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	push_warning(\"No classes available. Add a class first to assign.\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 257,
+"name": "_on_org_assign_class_requested",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	assigned_region = \"\"",
+"type": "raw"
+}, {
+"text": "	_update_org_rows()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 261,
+"name": "_on_org_cleared_region",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	assigned_class = \"\"",
+"type": "raw"
+}, {
+"text": "	_update_org_rows()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 266,
+"name": "_on_org_cleared_class",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var current = name_edit.text.strip_edges() if name_edit else \"\"",
+"type": "raw"
+}, {
+"text": "	emit_signal(\"name_commit_requested\", current)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 271,
+"name": "_on_name_focus_exited",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if not name_edit:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	name_edit.text = new_name",
+"type": "raw"
+}, {
+"text": "	_update_signature_preview()",
+"type": "raw"
+}, {
+"text": "	_emit_name_changed()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 276,
+"name": "set_name_text",
+"parameters": [{
+"default": "",
+"name": "new_name",
+"type": "String"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var current := name_edit.text.strip_edges() if name_edit else \"\"",
+"type": "raw"
+}, {
+"text": "	emit_signal(\"name_changed\", current)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 284,
+"name": "_emit_name_changed",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_reset_state()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 289,
+"name": "reset_form_state",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if confirm_button:",
+"type": "raw"
+}, {
+"text": "		confirm_button.text = text",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 293,
+"name": "_set_confirm_text",
+"parameters": [{
+"default": "",
+"name": "text",
+"type": "String"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if _suppress_mode_change or not export_check or not onready_check:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	if pressed:",
+"type": "raw"
+}, {
+"text": "		_suppress_mode_change = true",
+"type": "raw"
+}, {
+"text": "		onready_check.button_pressed = false",
+"type": "raw"
+}, {
+"text": "		_suppress_mode_change = false",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 298,
+"name": "_on_export_mode_toggled",
+"parameters": [{
+"default": "",
+"name": "pressed",
+"type": "bool"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if _suppress_mode_change or not export_check or not onready_check:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	if pressed:",
+"type": "raw"
+}, {
+"text": "		_suppress_mode_change = true",
+"type": "raw"
+}, {
+"text": "		export_check.button_pressed = false",
+"type": "raw"
+}, {
+"text": "		_suppress_mode_change = false",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 307,
+"name": "_on_onready_mode_toggled",
+"parameters": [{
+"default": "",
+"name": "pressed",
+"type": "bool"
+}],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if not export_check or not onready_check:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	if export_check.button_pressed and onready_check.button_pressed:",
+"type": "raw"
+}, {
+"text": "		onready_check.button_pressed = false",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 316,
+"name": "_enforce_mode_constraints",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if signature_label == null:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	var var_name := name_edit.text.strip_edges() if name_edit else \"\"",
+"type": "raw"
+}, {
+"text": "	if var_name == \"\":",
+"type": "raw"
+}, {
+"text": "		var_name = \"<variable>\"",
+"type": "raw"
+}, {
+"text": "	var type_text := str(selected_type.get(\"display\", \"\")).strip_edges()",
+"type": "raw"
+}, {
+"text": "	var prefix := \"@export \" if export_check and export_check.button_pressed else \"@onready \" if onready_check and onready_check.button_pressed else \"\"",
+"type": "raw"
+}, {
+"text": "	var keyword := \"const \" if const_check and const_check.button_pressed else \"var \"",
+"type": "raw"
+}, {
+"text": "	var line := prefix + keyword + var_name",
+"type": "raw"
+}, {
+"text": "	if type_text != \"\":",
+"type": "raw"
+}, {
+"text": "		line += \": \" + type_text",
+"type": "raw"
+}, {
+"text": "	var value_text := value_edit.text if value_edit else \"\"",
+"type": "raw"
+}, {
+"text": "	if value_text.strip_edges() != \"\":",
+"type": "raw"
+}, {
+"text": "		line += \" = \" + value_text.strip_edges()",
+"type": "raw"
+}, {
+"text": "	signature_label.text = line",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 323,
+"name": "_update_signature_preview",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if header_icon == null:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	var icon_name := _variable_type_icon_name()",
+"type": "raw"
+}, {
+"text": "	var icon := IconHelper.get_editor_icon(self, icon_name, \"Object\")",
+"type": "raw"
+}, {
+"text": "	if icon == null:",
+"type": "raw"
+}, {
+"text": "		icon = IconHelper.get_editor_icon(self, \"Object\", \"Node\")",
+"type": "raw"
+}, {
+"text": "	header_icon.texture = icon",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 340,
+"name": "_set_header_icon",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if header_title and header_title.text == \"\":",
+"type": "raw"
+}, {
+"text": "		header_title.text = \"Variable\"",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 349,
+"name": "_update_title",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	if signature_icon == null:",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
+"text": "	signature_icon.texture = IconHelper.get_editor_icon(self, \"Script\", \"Script\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 354,
+"name": "_set_signature_icon",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var confirm_button: Button = find_child(\"VarConfirmButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	if confirm_button == null:",
+"type": "raw"
+}, {
+"text": "		confirm_button = find_child(\"ConfirmButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	if confirm_button:",
+"type": "raw"
+}, {
+"text": "		var save_icon := IconHelper.get_editor_icon(self, \"Save\", \"Save\")",
+"type": "raw"
+}, {
+"text": "		if save_icon:",
+"type": "raw"
+}, {
+"text": "			confirm_button.icon = save_icon",
+"type": "raw"
+}, {
+"text": "		confirm_button.tooltip_text = \"Save variable\"",
+"type": "raw"
+}, {
+"text": "	var delete_button: Button = find_child(\"VarCancelButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	if delete_button == null:",
+"type": "raw"
+}, {
+"text": "		delete_button = find_child(\"DeleteButton\", true, false)",
+"type": "raw"
+}, {
+"text": "	if delete_button:",
+"type": "raw"
+}, {
+"text": "		var remove_icon := IconHelper.get_editor_icon(self, \"Remove\", \"Remove\")",
+"type": "raw"
+}, {
+"text": "		if remove_icon:",
+"type": "raw"
+}, {
+"text": "			delete_button.icon = remove_icon",
+"type": "raw"
+}, {
+"text": "		delete_button.tooltip_text = \"Delete variable\"",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 360,
+"name": "_set_action_icons",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var raw := str(selected_type.get(\"type\", \"\")).strip_edges()",
+"type": "raw"
+}, {
+"text": "	var lower := raw.to_lower()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if raw == \"\":",
+"type": "raw"
+}, {
+"text": "		return \"Variant\"",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	var candidates: Array[String] = []",
+"type": "raw"
+}, {
+"text": "	candidates.append(raw)",
+"type": "raw"
+}, {
+"text": "	candidates.append(\"Member\" + raw)",
+"type": "raw"
+}, {
+"text": "	candidates.append(lower)",
+"type": "raw"
+}, {
+"text": "	candidates.append(\"member\" + lower)",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	match lower:",
+"type": "raw"
+}, {
+"text": "		\"bool\", \"boolean\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"Boolean\"])",
+"type": "raw"
+}, {
+"text": "		\"int\", \"integer\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"int\", \"memberint\", \"Integer\", \"Number\"])",
+"type": "raw"
+}, {
+"text": "		\"float\", \"real\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"Float\"])",
+"type": "raw"
+}, {
+"text": "		\"string\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"String\"])",
+"type": "raw"
+}, {
+"text": "		\"array\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"Array\"])",
+"type": "raw"
+}, {
+"text": "		\"dictionary\", \"dict\", \"map\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"Dictionary\"])",
+"type": "raw"
+}, {
+"text": "		\"vector2\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"Vector2\"])",
+"type": "raw"
+}, {
+"text": "		\"vector3\":",
+"type": "raw"
+}, {
+"text": "			candidates.append_array([\"Vector3\"])",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	candidates.append_array([\"Object\", \"Variant\"])",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	for icon_name in candidates:",
+"type": "raw"
+}, {
+"text": "		if _has_editor_icon(icon_name):",
+"type": "raw"
+}, {
+"text": "			return icon_name",
+"type": "raw"
+}, {
+"text": "	return \"Object\"",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 378,
+"name": "_variable_type_icon_name",
+"parameters": [],
+"region": "",
+"return_type": "String",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	var tree := get_tree()",
+"type": "raw"
+}, {
+"text": "	var root := tree.root if tree else null",
+"type": "raw"
+}, {
+"text": "	if root and root.has_theme_icon(name, \"EditorIcons\"):",
+"type": "raw"
+}, {
+"text": "		return true",
+"type": "raw"
+}, {
+"text": "	return self != null and self.has_theme_icon(name, \"EditorIcons\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 417,
+"name": "_has_editor_icon",
+"parameters": [{
+"default": "",
+"name": "name",
+"type": "String"
+}],
+"region": "",
+"return_type": "bool",
+"scope_line": 0
+}],
+"order": {
+"|": [{
+"code": "signal delete_requested",
+"indent": 0,
+"line": 4,
+"name": "delete_requested",
+"type": "signal"
+}, {
+"code": "signal submitted(data: Dictionary)",
+"indent": 0,
+"line": 5,
+"name": "submitted",
+"type": "signal"
+}, {
+"code": "signal type_pick_requested",
+"indent": 0,
+"line": 6,
+"name": "type_pick_requested",
+"type": "signal"
+}, {
+"code": "signal name_changed(new_name: String)",
+"indent": 0,
+"line": 7,
+"name": "name_changed",
+"type": "signal"
+}, {
+"code": "signal name_commit_requested(new_name: String)",
+"indent": 0,
+"line": 8,
+"name": "name_commit_requested",
+"type": "signal"
+}, {
+"auto_spacing": false,
+"indent": 0,
+"line": 9,
+"manual_blank": true,
+"name": "blank_1",
+"type": "blank"
+}, {
+"code": "var name_edit: LineEdit",
+"indent": 0,
+"line": 10,
+"name": "name_edit",
+"type": "variable"
+}, {
+"code": "var type_button: Button",
+"indent": 0,
+"line": 11,
+"name": "type_button",
+"type": "variable"
+}, {
+"code": "var export_check: CheckBox",
+"indent": 0,
+"line": 12,
+"name": "export_check",
+"type": "variable"
+}, {
+"code": "var const_check: CheckBox",
+"indent": 0,
+"line": 13,
+"name": "const_check",
+"type": "variable"
+}, {
+"code": "var onready_check: CheckBox",
+"indent": 0,
+"line": 14,
+"name": "onready_check",
+"type": "variable"
+}, {
+"code": "var export_group_edit: LineEdit",
+"indent": 0,
+"line": 15,
+"name": "export_group_edit",
+"type": "variable"
+}, {
+"code": "var value_edit: LineEdit",
+"indent": 0,
+"line": 16,
+"name": "value_edit",
+"type": "variable"
+}, {
+"code": "var confirm_button: Button",
+"indent": 0,
+"line": 17,
+"name": "confirm_button",
+"type": "variable"
+}, {
+"code": "var signature_label: Label",
+"indent": 0,
+"line": 18,
+"name": "signature_label",
+"type": "variable"
+}, {
+"code": "var header_icon: TextureRect",
+"indent": 0,
+"line": 19,
+"name": "header_icon",
+"type": "variable"
+}, {
+"code": "var header_title: Label",
+"indent": 0,
+"line": 20,
+"name": "header_title",
+"type": "variable"
+}, {
+"code": "var signature_icon: TextureRect",
+"indent": 0,
+"line": 21,
+"name": "signature_icon",
+"type": "variable"
+}, {
+"code": "var _suppress_mode_change: bool = false",
+"indent": 0,
+"line": 22,
+"name": "_suppress_mode_change",
+"type": "variable"
+}, {
+"code": "var assigned_region: String = \"\"",
+"indent": 0,
+"line": 23,
+"name": "assigned_region",
+"type": "variable"
+}, {
+"code": "var assigned_class: String = \"\"",
+"indent": 0,
+"line": 24,
+"name": "assigned_class",
+"type": "variable"
+}, {
+"code": "var org_selector",
+"indent": 0,
+"line": 25,
+"name": "org_selector",
+"type": "variable"
+}, {
+"code": "const IconHelper = preload(\"res://addons/nodescript/utils/icon_helper.gd\")",
+"indent": 0,
+"line": 26,
+"name": "IconHelper = preload(\"res",
+"type": "variable"
+}, {
+"code": "const NodeScriptUtils = preload(\"res://addons/nodescript/utils/nodescript_utils.gd\")",
+"indent": 0,
+"line": 27,
+"name": "NodeScriptUtils = preload(\"res",
+"type": "variable"
+}, {
+"auto_spacing": false,
+"indent": 0,
+"line": 28,
+"manual_blank": true,
+"name": "blank_2",
+"type": "blank"
+}, {
+"code": "var selected_type: Dictionary = {\"type\": \"Variant\", \"display\": \"Variant\"}",
+"indent": 0,
+"line": 29,
+"name": "selected_type",
+"type": "variable"
+}, {
+"auto_spacing": false,
+"indent": 0,
+"line": 30,
+"manual_blank": true,
+"name": "blank_3",
+"type": "blank"
+}, {
+"code": "func _ready() -> void:",
+"indent": 0,
+"line": 31,
+"name": "_ready",
+"type": "function"
+}, {
+"code": "func start_new() -> void:",
+"indent": 0,
+"line": 91,
+"name": "start_new",
+"type": "function"
+}, {
+"code": "func show_variable(data: Dictionary) -> void:",
+"indent": 0,
+"line": 101,
+"name": "show_variable",
+"type": "function"
+}, {
+"code": "func _reset_state() -> void:",
+"indent": 0,
+"line": 131,
+"name": "_reset_state",
+"type": "function"
+}, {
+"code": "func set_selected_type(type_info: Dictionary) -> void:",
+"indent": 0,
+"line": 157,
+"name": "set_selected_type",
+"type": "function"
+}, {
+"code": "func _update_type_button() -> void:",
+"indent": 0,
+"line": 164,
+"name": "_update_type_button",
+"type": "function"
+}, {
+"code": "func _on_type_button_pressed() -> void:",
+"indent": 0,
+"line": 171,
+"name": "_on_type_button_pressed",
+"type": "function"
+}, {
+"code": "func _on_delete_pressed() -> void:",
+"indent": 0,
+"line": 175,
+"name": "_on_delete_pressed",
+"type": "function"
+}, {
+"code": "func _on_confirm_pressed() -> void:",
+"indent": 0,
+"line": 180,
+"name": "_on_confirm_pressed",
+"type": "function"
+}, {
+"code": "func _on_editor_focus_exited() -> void:",
+"indent": 0,
+"line": 203,
+"name": "_on_editor_focus_exited",
+"type": "function"
+}, {
+"code": "func _on_name_text_changed(new_text: String) -> void:",
+"indent": 0,
+"line": 211,
+"name": "_on_name_text_changed",
+"type": "function"
+}, {
+"code": "func _on_region_selected(index: int) -> void:",
+"indent": 0,
+"line": 218,
+"name": "_on_region_selected",
+"type": "function"
+}, {
+"code": "func _on_class_selected(index: int) -> void:",
+"indent": 0,
+"line": 222,
+"name": "_on_class_selected",
+"type": "function"
+}, {
+"code": "func set_region_class_lists(regions: Array, classes: Array) -> void:",
+"indent": 0,
+"line": 226,
+"name": "set_region_class_lists",
+"type": "function"
+}, {
+"code": "func set_region_class(region_name: String, class_title: String) -> void:",
+"indent": 0,
+"line": 231,
+"name": "set_region_class",
+"type": "function"
+}, {
+"code": "func _update_org_rows() -> void:",
+"indent": 0,
+"line": 238,
+"name": "_update_org_rows",
+"type": "function"
+}, {
+"code": "func _on_org_region_changed(region_name: String) -> void:",
+"indent": 0,
+"line": 243,
+"name": "_on_org_region_changed",
+"type": "function"
+}, {
+"code": "func _on_org_class_changed(class_title: String) -> void:",
+"indent": 0,
+"line": 248,
+"name": "_on_org_class_changed",
+"type": "function"
+}, {
+"code": "func _on_org_assign_region_requested() -> void:",
+"indent": 0,
+"line": 253,
+"name": "_on_org_assign_region_requested",
+"type": "function"
+}, {
+"code": "func _on_org_assign_class_requested() -> void:",
+"indent": 0,
+"line": 257,
+"name": "_on_org_assign_class_requested",
+"type": "function"
+}, {
+"code": "func _on_org_cleared_region() -> void:",
+"indent": 0,
+"line": 261,
+"name": "_on_org_cleared_region",
+"type": "function"
+}, {
+"code": "func _on_org_cleared_class() -> void:",
+"indent": 0,
+"line": 266,
+"name": "_on_org_cleared_class",
+"type": "function"
+}, {
+"code": "func _on_name_focus_exited() -> void:",
+"indent": 0,
+"line": 271,
+"name": "_on_name_focus_exited",
+"type": "function"
+}, {
+"code": "func set_name_text(new_name: String) -> void:",
+"indent": 0,
+"line": 276,
+"name": "set_name_text",
+"type": "function"
+}, {
+"code": "func _emit_name_changed() -> void:",
+"indent": 0,
+"line": 284,
+"name": "_emit_name_changed",
+"type": "function"
+}, {
+"code": "func reset_form_state() -> void:",
+"indent": 0,
+"line": 289,
+"name": "reset_form_state",
+"type": "function"
+}, {
+"code": "func _set_confirm_text(text: String) -> void:",
+"indent": 0,
+"line": 293,
+"name": "_set_confirm_text",
+"type": "function"
+}, {
+"code": "func _on_export_mode_toggled(pressed: bool) -> void:",
+"indent": 0,
+"line": 298,
+"name": "_on_export_mode_toggled",
+"type": "function"
+}, {
+"code": "func _on_onready_mode_toggled(pressed: bool) -> void:",
+"indent": 0,
+"line": 307,
+"name": "_on_onready_mode_toggled",
+"type": "function"
+}, {
+"code": "func _enforce_mode_constraints() -> void:",
+"indent": 0,
+"line": 316,
+"name": "_enforce_mode_constraints",
+"type": "function"
+}, {
+"code": "func _update_signature_preview() -> void:",
+"indent": 0,
+"line": 323,
+"name": "_update_signature_preview",
+"type": "function"
+}, {
+"code": "func _set_header_icon() -> void:",
+"indent": 0,
+"line": 340,
+"name": "_set_header_icon",
+"type": "function"
+}, {
+"code": "func _update_title() -> void:",
+"indent": 0,
+"line": 349,
+"name": "_update_title",
+"type": "function"
+}, {
+"code": "func _set_signature_icon() -> void:",
+"indent": 0,
+"line": 354,
+"name": "_set_signature_icon",
+"type": "function"
+}, {
+"code": "func _set_action_icons() -> void:",
+"indent": 0,
+"line": 360,
+"name": "_set_action_icons",
+"type": "function"
+}, {
+"code": "func _variable_type_icon_name() -> String:",
+"indent": 0,
+"line": 378,
+"name": "_variable_type_icon_name",
+"type": "function"
+}, {
+"code": "func _has_editor_icon(name: String) -> bool:",
+"indent": 0,
+"line": 417,
+"name": "_has_editor_icon",
+"type": "function"
+}]
+},
+"regions": [],
+"signals": {
+"delete_requested": {
+"class": "",
+"parameters": [],
+"region": "",
+"scope_line": 0
+},
+"name_changed": {
+"class": "",
+"parameters": [{
+"default": "",
+"name": "new_name",
+"type": "String"
+}],
+"region": "",
+"scope_line": 0
+},
+"name_commit_requested": {
+"class": "",
+"parameters": [{
+"default": "",
+"name": "new_name",
+"type": "String"
+}],
+"region": "",
+"scope_line": 0
+},
+"submitted": {
+"class": "",
+"parameters": [{
+"default": "",
+"name": "data",
+"type": "Dictionary"
+}],
+"region": "",
+"scope_line": 0
+},
+"type_pick_requested": {
+"class": "",
+"parameters": [],
+"region": "",
+"scope_line": 0
+}
+},
+"variables": [{
+"class": "",
+"const": false,
+"export": false,
+"name": "name_edit",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "LineEdit",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "type_button",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "Button",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "export_check",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "CheckBox",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "const_check",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "CheckBox",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "onready_check",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "CheckBox",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "export_group_edit",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "LineEdit",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "value_edit",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "LineEdit",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "confirm_button",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "Button",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "signature_label",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "Label",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "header_icon",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "TextureRect",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "header_title",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "Label",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "signature_icon",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "TextureRect",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "_suppress_mode_change",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "bool",
+"value": "false"
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "assigned_region",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "String",
+"value": "\"\""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "assigned_class",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "String",
+"value": "\"\""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "org_selector",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "",
+"value": ""
+}, {
+"class": "",
+"const": true,
+"export": false,
+"name": "IconHelper = preload(\"res",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "//addons/nodescript/utils/icon_helper.gd\")",
+"value": ""
+}, {
+"class": "",
+"const": true,
+"export": false,
+"name": "NodeScriptUtils = preload(\"res",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "//addons/nodescript/utils/nodescript_utils.gd\")",
+"value": ""
+}, {
+"class": "",
+"const": false,
+"export": false,
+"name": "selected_type",
+"onready": false,
+"region": "",
+"scope_line": 0,
+"type": "Dictionary",
+"value": "{\"type\""
+}]
+}
