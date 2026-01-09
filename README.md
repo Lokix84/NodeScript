@@ -12,9 +12,10 @@ A lean, read-only Godot 4 editor plugin that mirrors a GDScript file into a navi
 - Example script in `addons/nodescript/examples/` to see the view in action.
 
 ## Installation
-1. Copy the `addons/nodescript` folder into your project.
-2. In Godot: Project Settings → Plugins → enable **NodeScript**.
-3. Open a GDScript; the NodeScript dock appears and will auto-create its `.nodescript.tres`.
+1. Download `dist/nodescript_v1.zip` from this repo (or use GitHub → **Code** → **Download ZIP**) and unzip it.
+2. Copy the `addons/nodescript` folder into your project.
+3. In Godot: Project Settings → Plugins → enable **NodeScript**.
+4. Open a GDScript; the NodeScript dock appears and will auto-create its `.nodescript.tres`.
 
 ## Usage
 - Use the filter to narrow items; parents stay visible if any child matches.
