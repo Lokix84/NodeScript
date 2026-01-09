@@ -21,210 +21,6 @@ body = {
 "text": "pass",
 "type": "pass"
 }, {
-"text": "	# Create the NodeScript main panel",
-"type": "raw"
-}, {
-"text": "	nodescript_panel = NodeScriptPanelScene.instantiate()",
-"type": "raw"
-}, {
-"text": "	nodescript_panel.name = \"NodeScriptMain\"",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Let the panel know its plugin (optional but useful later)",
-"type": "raw"
-}, {
-"text": "	if nodescript_panel.has_method(\"set_editor_plugin\"):",
-"type": "raw"
-}, {
-"text": "		nodescript_panel.set_editor_plugin(self)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Add as a MAIN SCREEN (top-center tab like 2D/3D/Script/Game/AssetLib)",
-"type": "raw"
-}, {
-"text": "	get_editor_interface().get_editor_main_screen().add_child(nodescript_panel)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Start hidden; editor calls _make_visible when you click the tab",
-"type": "raw"
-}, {
-"text": "	nodescript_panel.hide()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Create docks for integration with Script editor",
-"type": "raw"
-}, {
-"text": "	_setup_docks()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Connect to script editor signals",
-"type": "raw"
-}, {
-"text": "	_connect_script_editor()",
-"type": "raw"
-}, {
-"text": "	_connect_filesystem_signals()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Add Tools menu items",
-"type": "raw"
-}, {
-"text": "	_setup_tools_menu()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 20,
-"name": "_enter_tree",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	# Cleanup docks",
-"type": "raw"
-}, {
-"text": "	_safe_remove_dock(tree_dock)",
-"type": "raw"
-}, {
-"text": "	tree_dock = null",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	_safe_remove_dock(inspector_dock)",
-"type": "raw"
-}, {
-"text": "	inspector_dock = null",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Disconnect script editor",
-"type": "raw"
-}, {
-"text": "	if script_editor_ref:",
-"type": "raw"
-}, {
-"text": "		if script_editor_ref.editor_script_changed.is_connected(_on_script_changed):",
-"type": "raw"
-}, {
-"text": "			script_editor_ref.editor_script_changed.disconnect(_on_script_changed)",
-"type": "raw"
-}, {
-"text": "		if script_editor_ref.has_signal(\"script_saved\") and script_editor_ref.script_saved.is_connected(_on_script_saved):",
-"type": "raw"
-}, {
-"text": "			script_editor_ref.script_saved.disconnect(_on_script_saved)",
-"type": "raw"
-}, {
-"text": "		script_editor_ref = null",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	var file_system = get_editor_interface().get_resource_filesystem()",
-"type": "raw"
-}, {
-"text": "	if file_system and file_system.filesystem_changed.is_connected(_on_filesystem_changed):",
-"type": "raw"
-}, {
-"text": "		file_system.filesystem_changed.disconnect(_on_filesystem_changed)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Cleanup main panel",
-"type": "raw"
-}, {
-"text": "	if nodescript_panel and is_instance_valid(nodescript_panel):",
-"type": "raw"
-}, {
-"text": "		nodescript_panel.queue_free()",
-"type": "raw"
-}, {
-"text": "		nodescript_panel = null",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 46,
-"name": "_exit_tree",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	add_tool_menu_item(\"NodeScript/Clear All .nodescript.tres Files\", _on_clear_nodescript_files_pressed)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 74,
-"name": "_setup_tools_menu",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
 "text": "	var confirmation_dialog = ConfirmationDialog.new()",
 "type": "raw"
 }, {
@@ -261,13 +57,67 @@ body = {
 "text": "",
 "type": "raw"
 }, {
-"text": "	# Add dialog to editor and show it",
+"text": "	var base_control = get_editor_interface().get_base_control()",
 "type": "raw"
 }, {
-"text": "	get_editor_interface().get_base_control().add_child(confirmation_dialog)",
+"text": "	if base_control:",
 "type": "raw"
 }, {
-"text": "	confirmation_dialog.popup_centered_ratio(0.4)",
+"text": "		base_control.add_child(confirmation_dialog)",
+"type": "raw"
+}, {
+"text": "		confirmation_dialog.popup_centered_ratio(0.4)",
+"type": "raw"
+}, {
+"text": "	else:",
+"type": "raw"
+}, {
+"text": "		push_error(\"NodeScript: Unable to show confirmation dialog (no base control).\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 15,
+"name": "show_clear_nodescript_files_dialog",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	# Initialization happens in _enable_plugin when the user enables the addon.",
+"type": "raw"
+}, {
+"text": "	pass",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 35,
+"name": "_enter_tree",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_disable_plugin()",
 "type": "raw"
 }, {
 "text": "",
@@ -277,7 +127,151 @@ body = {
 "type": "raw"
 }],
 "class": "",
-"def_line": 78,
+"def_line": 39,
+"name": "_exit_tree",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_setup_docks()",
+"type": "raw"
+}, {
+"text": "	_connect_script_editor()",
+"type": "raw"
+}, {
+"text": "	# Mark ready on the next frame to avoid startup churn",
+"type": "raw"
+}, {
+"text": "	call_deferred(\"_mark_editor_ready\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 43,
+"name": "_enable_plugin",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_editor_ready = false",
+"type": "raw"
+}, {
+"text": "	_pending_script_for_autocreate = null",
+"type": "raw"
+}, {
+"text": "	_current_script = null",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	_clear_dock_contents()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if tree_dock and is_instance_valid(tree_dock):",
+"type": "raw"
+}, {
+"text": "		remove_control_from_docks(tree_dock)",
+"type": "raw"
+}, {
+"text": "		tree_dock.queue_free()",
+"type": "raw"
+}, {
+"text": "		tree_dock = null",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	if script_editor_ref:",
+"type": "raw"
+}, {
+"text": "		if script_editor_ref.editor_script_changed.is_connected(_on_script_changed):",
+"type": "raw"
+}, {
+"text": "			script_editor_ref.editor_script_changed.disconnect(_on_script_changed)",
+"type": "raw"
+}, {
+"text": "		script_editor_ref = null",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 50,
+"name": "_disable_plugin",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	_editor_ready = true",
+"type": "raw"
+}, {
+"text": "	if _pending_script_for_autocreate:",
+"type": "raw"
+}, {
+"text": "		call_deferred(\"_attempt_autocreate_if_visible\")",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 67,
+"name": "_mark_editor_ready",
+"parameters": [],
+"region": "",
+"return_type": "void",
+"scope_line": 0
+}, {
+"body": [{
+"text": "NodeScript: default method body",
+"type": "comment"
+}, {
+"text": "pass",
+"type": "pass"
+}, {
+"text": "	show_clear_nodescript_files_dialog()",
+"type": "raw"
+}, {
+"text": "",
+"type": "raw"
+}],
+"class": "",
+"def_line": 72,
 "name": "_on_clear_nodescript_files_pressed",
 "parameters": [],
 "region": "",
@@ -306,26 +300,32 @@ body = {
 "text": "	# Refresh file system",
 "type": "raw"
 }, {
-"text": "	file_system.scan()",
+"text": "	if file_system:",
+"type": "raw"
+}, {
+"text": "		file_system.scan()",
 "type": "raw"
 }, {
 "text": "",
 "type": "raw"
 }, {
-"text": "	var message = \"Cleared %d .nodescript.tres file(s)\" % deleted_files.size()",
+"text": "	if deleted_files.is_empty():",
 "type": "raw"
 }, {
-"text": "	print(\"NodeScript: \" + message)",
+"text": "		push_warning(\"NodeScript: No .nodescript.tres files found to delete.\")",
 "type": "raw"
 }, {
-"text": "",
+"text": "	else:",
+"type": "raw"
+}, {
+"text": "		push_warning(\"NodeScript: Cleared %d .nodescript.tres file(s).\" % deleted_files.size())",
 "type": "raw"
 }, {
 "text": "",
 "type": "raw"
 }],
 "class": "",
-"def_line": 96,
+"def_line": 75,
 "name": "_perform_clear_nodescript_files",
 "parameters": [],
 "region": "",
@@ -399,9 +399,6 @@ body = {
 "text": "				deleted_files.append(full_path)",
 "type": "raw"
 }, {
-"text": "				print(\"NodeScript: Deleted %s\" % full_path)",
-"type": "raw"
-}, {
 "text": "			else:",
 "type": "raw"
 }, {
@@ -416,12 +413,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 108,
+"def_line": 89,
 "name": "_delete_nodescript_files_recursive",
 "parameters": [{
 "default": "",
@@ -443,103 +437,6 @@ body = {
 "text": "pass",
 "type": "pass"
 }, {
-"text": "	# Disabled: NodeScript now works entirely through docks",
-"type": "raw"
-}, {
-"text": "	return false",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 138,
-"name": "_has_main_screen",
-"parameters": [],
-"region": "",
-"return_type": "bool",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	if not nodescript_panel:",
-"type": "raw"
-}, {
-"text": "		return",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	nodescript_panel.visible = visible",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	if visible:",
-"type": "raw"
-}, {
-"text": "		# When the NodeScript tab is shown, grab the current script",
-"type": "raw"
-}, {
-"text": "		var script_editor := get_editor_interface().get_script_editor()",
-"type": "raw"
-}, {
-"text": "		var current_script: Script = null",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "		if script_editor and script_editor.has_method(\"get_current_script\"):",
-"type": "raw"
-}, {
-"text": "			current_script = script_editor.get_current_script()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "		if nodescript_panel.has_method(\"set_target_script\"):",
-"type": "raw"
-}, {
-"text": "			nodescript_panel.set_target_script(current_script)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 143,
-"name": "_make_visible",
-"parameters": [{
-"default": "",
-"name": "visible",
-"type": "bool"
-}],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
 "text": "	# Label of the main tab",
 "type": "raw"
 }, {
@@ -548,12 +445,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 161,
+"def_line": 115,
 "name": "_get_plugin_name",
 "parameters": [],
 "region": "",
@@ -575,12 +469,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 166,
+"def_line": 119,
 "name": "_get_plugin_icon",
 "parameters": [],
 "region": "",
@@ -660,88 +551,7 @@ body = {
 "text": "	add_control_to_dock(DOCK_SLOT_LEFT_UR, tree_dock)",
 "type": "raw"
 }, {
-"text": "",
-"type": "raw"
-}, {
 "text": "	_set_dock_tab_icon_from_list(tree_dock, [\"Tree\", \"Filesystem\", \"Folder\"])",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Create inspector dock for right sidebar",
-"type": "raw"
-}, {
-"text": "	inspector_dock = Control.new()",
-"type": "raw"
-}, {
-"text": "	inspector_dock.tooltip_text = \"NodeScript Inspector\"",
-"type": "raw"
-}, {
-"text": "	inspector_dock.size_flags_horizontal = Control.SIZE_EXPAND_FILL",
-"type": "raw"
-}, {
-"text": "	inspector_dock.size_flags_vertical = Control.SIZE_EXPAND_FILL",
-"type": "raw"
-}, {
-"text": "	var inspector_dock_content = NodeScriptInspectorDockScript.new()",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.name = \"NodeScriptInspectorDockContent\"",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.set_editor_plugin(self)",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.size_flags_vertical = Control.SIZE_EXPAND_FILL",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.anchor_right = 1.0",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.anchor_bottom = 1.0",
-"type": "raw"
-}, {
-"text": "	inspector_dock.add_child(inspector_dock_content)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Add to right dock (alongside Inspector)",
-"type": "raw"
-}, {
-"text": "	add_control_to_dock(DOCK_SLOT_RIGHT_UL, inspector_dock)",
-"type": "raw"
-}, {
-"text": "	# Prefer custom icon if available; fall back to editor icons",
-"type": "raw"
-}, {
-"text": "	_set_dock_tab_icon_custom_or_list(inspector_dock, \"res://addons/nodescript/icons/EditorProperty.svg\", [\"EditorProperty\", \"Inspector\", \"Property\", \"Object\"])",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Connect tree selection to inspector",
-"type": "raw"
-}, {
-"text": "	tree_dock_content.item_selected.connect(_on_tree_item_selected)",
-"type": "raw"
-}, {
-"text": "	tree_dock_content.item_activated.connect(_on_tree_item_activated)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Connect inspector updates to tree refresh",
-"type": "raw"
-}, {
-"text": "	inspector_dock_content.tree_refresh_requested.connect(_refresh_tree_dock)",
 "type": "raw"
 }, {
 "text": "",
@@ -751,9 +561,6 @@ body = {
 "type": "raw"
 }, {
 "text": "	tree_dock.visible = true",
-"type": "raw"
-}, {
-"text": "	inspector_dock.visible = true",
 "type": "raw"
 }, {
 "text": "",
@@ -777,17 +584,11 @@ body = {
 "text": "	tree_dock.visibility_changed.connect(_on_dock_visibility_changed)",
 "type": "raw"
 }, {
-"text": "	inspector_dock.visibility_changed.connect(_on_dock_visibility_changed)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
 "text": "",
 "type": "raw"
 }],
 "class": "",
-"def_line": 173,
+"def_line": 124,
 "name": "_setup_docks",
 "parameters": [],
 "region": "",
@@ -809,12 +610,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 238,
+"def_line": 159,
 "name": "_deferred_restore_focus",
 "parameters": [{
 "default": "",
@@ -861,12 +659,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 243,
+"def_line": 163,
 "name": "_set_dock_tab_icon_from_list",
 "parameters": [{
 "default": "",
@@ -914,12 +709,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 255,
+"def_line": 174,
 "name": "_set_dock_tab_icon_custom_or_list",
 "parameters": [{
 "default": "",
@@ -954,12 +746,6 @@ body = {
 "text": "		script_editor_ref.editor_script_changed.connect(_on_script_changed)",
 "type": "raw"
 }, {
-"text": "		if script_editor_ref.has_signal(\"script_saved\"):",
-"type": "raw"
-}, {
-"text": "			script_editor_ref.script_saved.connect(_on_script_saved)",
-"type": "raw"
-}, {
 "text": "",
 "type": "raw"
 }, {
@@ -977,52 +763,10 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "	# Note: FileSystemDock doesn't have file_selected signal",
-"type": "raw"
-}, {
-"text": "	# Script changes are handled by editor_script_changed above",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 266,
+"def_line": 184,
 "name": "_connect_script_editor",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	var file_system = get_editor_interface().get_resource_filesystem()",
-"type": "raw"
-}, {
-"text": "	if file_system and not file_system.filesystem_changed.is_connected(_on_filesystem_changed):",
-"type": "raw"
-}, {
-"text": "		file_system.filesystem_changed.connect(_on_filesystem_changed)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 282,
-"name": "_connect_filesystem_signals",
 "parameters": [],
 "region": "",
 "return_type": "void",
@@ -1050,16 +794,46 @@ body = {
 "text": "		return",
 "type": "raw"
 }, {
+"text": "	",
+"type": "raw"
+}, {
+"text": "	# Skip if script file doesn't exist on disk",
+"type": "raw"
+}, {
+"text": "	if not FileAccess.file_exists(script.resource_path):",
+"type": "raw"
+}, {
+"text": "		_current_script = null",
+"type": "raw"
+}, {
+"text": "		_pending_script_for_autocreate = null",
+"type": "raw"
+}, {
+"text": "		_clear_dock_contents()",
+"type": "raw"
+}, {
+"text": "		return",
+"type": "raw"
+}, {
 "text": "",
 "type": "raw"
 }, {
 "text": "	_current_script = script",
 "type": "raw"
 }, {
-"text": "	print(\"NodeScript: Script changed to %s\" % script.resource_path)",
+"text": "	",
 "type": "raw"
 }, {
-"text": "",
+"text": "	# Uncomment for debugging",
+"type": "raw"
+}, {
+"text": "	#if _editor_ready:",
+"type": "raw"
+}, {
+"text": "	#	print(\"NodeScript: Script changed to %s\" % script.resource_path)",
+"type": "raw"
+}, {
+"text": "	",
 "type": "raw"
 }, {
 "text": "	# Check if this script has a NodeScript resource",
@@ -1074,7 +848,13 @@ body = {
 "text": "	if not ns_path.is_empty():",
 "type": "raw"
 }, {
-"text": "		print(\"NodeScript: Found existing resource at %s\" % ns_path)",
+"text": "		# Uncomment for debugging",
+"type": "raw"
+}, {
+"text": "		#if _editor_ready:",
+"type": "raw"
+}, {
+"text": "		#	print(\"NodeScript: Found existing resource at %s\" % ns_path)",
 "type": "raw"
 }, {
 "text": "		_pending_script_for_autocreate = null",
@@ -1086,90 +866,35 @@ body = {
 "text": "	else:",
 "type": "raw"
 }, {
-"text": "		print(\"NodeScript: No resource found, will auto-create for %s\" % script.resource_path)",
-"type": "raw"
-}, {
-"text": "		# Defer auto-creation with guard to prevent stale calls from rapid clicks",
+"text": "		# Only auto-create after editor is ready (avoid startup churn)",
 "type": "raw"
 }, {
 "text": "		_pending_script_for_autocreate = script",
 "type": "raw"
 }, {
-"text": "		call_deferred(\"_deferred_autocreate_nodescript\", script)",
+"text": "		if _editor_ready:",
 "type": "raw"
 }, {
-"text": "",
+"text": "			call_deferred(\"_deferred_autocreate_nodescript\", script)",
+"type": "raw"
+}, {
+"text": "		else:",
+"type": "raw"
+}, {
+"text": "			_clear_dock_contents()",
 "type": "raw"
 }, {
 "text": "",
 "type": "raw"
 }],
 "class": "",
-"def_line": 288,
+"def_line": 196,
 "name": "_on_script_changed",
 "parameters": [{
 "default": "",
 "name": "script",
 "type": "Script"
 }],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	if script and script == _current_script:",
-"type": "raw"
-}, {
-"text": "		_refresh_current_from_source()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 312,
-"name": "_on_script_saved",
-"parameters": [{
-"default": "",
-"name": "script",
-"type": "Script"
-}],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	if _current_script:",
-"type": "raw"
-}, {
-"text": "		_refresh_current_from_source()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 317,
-"name": "_on_filesystem_changed",
-"parameters": [],
 "region": "",
 "return_type": "void",
 "scope_line": 0
@@ -1225,12 +950,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 322,
+"def_line": 233,
 "name": "_get_nodescript_path",
 "parameters": [{
 "default": "",
@@ -1248,59 +970,11 @@ body = {
 "text": "pass",
 "type": "pass"
 }, {
-"text": "	# Docks remain visible by default",
+"text": "	# Uncomment for debugging",
 "type": "raw"
 }, {
-"text": "	pass",
+"text": "	#print(\"NodeScript: Loading script in docks: %s\" % script.resource_path)",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 339,
-"name": "_show_docks",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	# Keep docks visible so users can trigger auto-create",
-"type": "raw"
-}, {
-"text": "	pass",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 344,
-"name": "_hide_docks",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
 }, {
 "text": "	# Load script in tree dock",
 "type": "raw"
@@ -1314,35 +988,20 @@ body = {
 "text": "		if tree_content and tree_content.has_method(\"load_script\"):",
 "type": "raw"
 }, {
+"text": "			# Uncomment for debugging",
+"type": "raw"
+}, {
+"text": "			#print(\"NodeScript: Loading in tree dock\")",
+"type": "raw"
+}, {
 "text": "			tree_content.load_script(script)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "	# Load script in inspector dock",
-"type": "raw"
-}, {
-"text": "	if inspector_dock:",
-"type": "raw"
-}, {
-"text": "		var inspector_content = inspector_dock.get_node_or_null(\"NodeScriptInspectorDockContent\")",
-"type": "raw"
-}, {
-"text": "		if inspector_content and inspector_content.has_method(\"load_script\"):",
-"type": "raw"
-}, {
-"text": "			inspector_content.load_script(script)",
-"type": "raw"
-}, {
-"text": "",
 "type": "raw"
 }, {
 "text": "",
 "type": "raw"
 }],
 "class": "",
-"def_line": 349,
+"def_line": 249,
 "name": "_load_script_in_docks",
 "parameters": [{
 "default": "",
@@ -1381,35 +1040,11 @@ body = {
 "text": "				tree_content.load_script(null)",
 "type": "raw"
 }, {
-"text": "	if inspector_dock:",
-"type": "raw"
-}, {
-"text": "		var inspector_content = inspector_dock.get_node_or_null(\"NodeScriptInspectorDockContent\")",
-"type": "raw"
-}, {
-"text": "		if inspector_content:",
-"type": "raw"
-}, {
-"text": "			if inspector_content.has_method(\"_clear_editors\"):",
-"type": "raw"
-}, {
-"text": "				inspector_content._clear_editors()",
-"type": "raw"
-}, {
-"text": "			elif inspector_content.has_method(\"load_script\"):",
-"type": "raw"
-}, {
-"text": "				inspector_content.load_script(null)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
 "text": "",
 "type": "raw"
 }],
 "class": "",
-"def_line": 363,
+"def_line": 260,
 "name": "_clear_dock_contents",
 "parameters": [],
 "region": "",
@@ -1437,12 +1072,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 380,
+"def_line": 269,
 "name": "_on_dock_visibility_changed",
 "parameters": [],
 "region": "",
@@ -1462,7 +1094,7 @@ body = {
 "text": "		return",
 "type": "raw"
 }, {
-"text": "	if (tree_dock and tree_dock.visible) or (inspector_dock and inspector_dock.visible):",
+"text": "	if (tree_dock and tree_dock.visible):",
 "type": "raw"
 }, {
 "text": "		var created_path = _ensure_nodescript_resource(_pending_script_for_autocreate)",
@@ -1479,12 +1111,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 387,
+"def_line": 275,
 "name": "_attempt_autocreate_if_visible",
 "parameters": [],
 "region": "",
@@ -1498,13 +1127,10 @@ body = {
 "text": "pass",
 "type": "pass"
 }, {
-"text": "	# Guard: only create if this script is still the current one",
+"text": "	# Only create if script is valid (don't check if it's still current - allows batch creation during startup)",
 "type": "raw"
 }, {
-"text": "	# (prevents stale queued calls from rapid clicks)",
-"type": "raw"
-}, {
-"text": "	if not script or script != _current_script:",
+"text": "	if not script:",
 "type": "raw"
 }, {
 "text": "		return",
@@ -1519,23 +1145,26 @@ body = {
 "text": "	if not created_path.is_empty():",
 "type": "raw"
 }, {
-"text": "		_pending_script_for_autocreate = null",
+"text": "		# If this script is still the current one, load it in docks",
 "type": "raw"
 }, {
-"text": "		# Give filesystem a moment to sync before loading",
+"text": "		if script == _current_script:",
 "type": "raw"
 }, {
-"text": "		call_deferred(\"_load_script_in_docks\", script)",
+"text": "			_pending_script_for_autocreate = null",
 "type": "raw"
 }, {
-"text": "",
+"text": "			# Give filesystem a moment to sync before loading",
+"type": "raw"
+}, {
+"text": "			call_deferred(\"_load_script_in_docks\", script)",
 "type": "raw"
 }, {
 "text": "",
 "type": "raw"
 }],
 "class": "",
-"def_line": 397,
+"def_line": 284,
 "name": "_deferred_autocreate_nodescript",
 "parameters": [{
 "default": "",
@@ -1559,6 +1188,9 @@ body = {
 "text": "		return \"\"",
 "type": "raw"
 }, {
+"text": "",
+"type": "raw"
+}, {
 "text": "	var ns_path = _get_nodescript_path(script)",
 "type": "raw"
 }, {
@@ -1580,10 +1212,28 @@ body = {
 "text": "	var target_path = base + \".nodescript.tres\"",
 "type": "raw"
 }, {
+"text": "",
+"type": "raw"
+}, {
+"text": "	var sync = NodeScriptSync.new()",
+"type": "raw"
+}, {
 "text": "	var res = NodeScriptResource.new()",
 "type": "raw"
 }, {
-"text": "	res.set_class_name(script.resource_name)",
+"text": "	sync.nodescript = res",
+"type": "raw"
+}, {
+"text": "	sync._ensure_body_structure()",
+"type": "raw"
+}, {
+"text": "	# Parse the existing script to populate the resource",
+"type": "raw"
+}, {
+"text": "	sync._sync_from_script_source(script)",
+"type": "raw"
+}, {
+"text": "	res = sync.nodescript",
 "type": "raw"
 }, {
 "text": "",
@@ -1604,12 +1254,6 @@ body = {
 "text": "",
 "type": "raw"
 }, {
-"text": "	print(\"NodeScript: Auto-created %s\" % target_path)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
 "text": "	# Force file system scan to register the new file",
 "type": "raw"
 }, {
@@ -1625,7 +1269,7 @@ body = {
 "text": "",
 "type": "raw"
 }, {
-"text": "	# Ensure ResourceLoader sees the new file without stale cache (Godot 4: force replace in cache)",
+"text": "	# Ensure ResourceLoader sees the new file without stale cache",
 "type": "raw"
 }, {
 "text": "	var _tmp = ResourceLoader.load(target_path, \"\", ResourceLoader.CACHE_MODE_REPLACE)",
@@ -1639,12 +1283,9 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 410,
+"def_line": 297,
 "name": "_ensure_nodescript_resource",
 "parameters": [{
 "default": "",
@@ -1662,57 +1303,6 @@ body = {
 "text": "pass",
 "type": "pass"
 }, {
-"text": "	# When user selects an item in the tree, show it in the inspector dock",
-"type": "raw"
-}, {
-"text": "	if inspector_dock:",
-"type": "raw"
-}, {
-"text": "		var inspector_content = inspector_dock.get_node_or_null(\"NodeScriptInspectorDockContent\")",
-"type": "raw"
-}, {
-"text": "		if inspector_content and inspector_content.has_method(\"show_item_editor\"):",
-"type": "raw"
-}, {
-"text": "			inspector_content.show_item_editor(item_type, item_name, item_data)",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 441,
-"name": "_on_tree_item_selected",
-"parameters": [{
-"default": "",
-"name": "item_type",
-"type": "String"
-}, {
-"default": "",
-"name": "item_name",
-"type": "String"
-}, {
-"default": "",
-"name": "item_data",
-"type": "Dictionary"
-}],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	# Refresh tree dock after inspector makes changes",
-"type": "raw"
-}, {
 "text": "	if tree_dock:",
 "type": "raw"
 }, {
@@ -1727,502 +1317,235 @@ body = {
 }, {
 "text": "",
 "type": "raw"
-}, {
-"text": "",
-"type": "raw"
 }],
 "class": "",
-"def_line": 449,
+"def_line": 332,
 "name": "_refresh_tree_dock",
 "parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	if _is_refreshing_from_fs:",
-"type": "raw"
-}, {
-"text": "		return",
-"type": "raw"
-}, {
-"text": "	_is_refreshing_from_fs = true",
-"type": "raw"
-}, {
-"text": "	if _current_script:",
-"type": "raw"
-}, {
-"text": "		var path := _current_script.resource_path",
-"type": "raw"
-}, {
-"text": "		if _last_refresh_path == path:",
-"type": "raw"
-}, {
-"text": "			_is_refreshing_from_fs = false",
-"type": "raw"
-}, {
-"text": "			return",
-"type": "raw"
-}, {
-"text": "		var sync = NodeScriptSyncScript.new()",
-"type": "raw"
-}, {
-"text": "		sync.load_for_script(_current_script)",
-"type": "raw"
-}, {
-"text": "		_load_script_in_docks(_current_script)",
-"type": "raw"
-}, {
-"text": "		_last_refresh_path = path",
-"type": "raw"
-}, {
-"text": "	call_deferred(\"_clear_refresh_flag\")",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 457,
-"name": "_refresh_current_from_source",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	_is_refreshing_from_fs = false",
-"type": "raw"
-}, {
-"text": "	_last_refresh_path = \"\"",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 473,
-"name": "_clear_refresh_flag",
-"parameters": [],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	if control and is_instance_valid(control):",
-"type": "raw"
-}, {
-"text": "		if control.get_parent():",
-"type": "raw"
-}, {
-"text": "			remove_control_from_docks(control)",
-"type": "raw"
-}, {
-"text": "		control.queue_free()",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 478,
-"name": "_safe_remove_dock",
-"parameters": [{
-"default": "",
-"name": "control",
-"type": "Control"
-}],
-"region": "",
-"return_type": "void",
-"scope_line": 0
-}, {
-"body": [{
-"text": "NodeScript: default method body",
-"type": "comment"
-}, {
-"text": "pass",
-"type": "pass"
-}, {
-"text": "	# When user double-clicks an item, could jump to code location",
-"type": "raw"
-}, {
-"text": "	# For now, just ensure the inspector is visible",
-"type": "raw"
-}, {
-"text": "	if inspector_dock:",
-"type": "raw"
-}, {
-"text": "		inspector_dock.visible = true",
-"type": "raw"
-}, {
-"text": "",
-"type": "raw"
-}],
-"class": "",
-"def_line": 485,
-"name": "_on_tree_item_activated",
-"parameters": [{
-"default": "",
-"name": "item_type",
-"type": "String"
-}, {
-"default": "",
-"name": "item_name",
-"type": "String"
-}],
 "region": "",
 "return_type": "void",
 "scope_line": 0
 }],
 "order": {
 "|": [{
-"code": "const NodeScriptPanelScene: PackedScene = preload(\"res://addons/nodescript/editor/nodescript_panel.tscn\")",
-"indent": 0,
-"line": 4,
-"name": "NodeScriptPanelScene",
-"type": "variable"
-}, {
 "code": "const NodeScriptTreeDockScript: Script = preload(\"res://addons/nodescript/editor/nodescript_tree_dock.gd\")",
 "indent": 0,
-"line": 5,
+"line": 4,
 "name": "NodeScriptTreeDockScript",
-"type": "variable"
-}, {
-"code": "const NodeScriptInspectorDockScript: Script = preload(\"res://addons/nodescript/editor/nodescript_inspector_dock.gd\")",
-"indent": 0,
-"line": 6,
-"name": "NodeScriptInspectorDockScript",
 "type": "variable"
 }, {
 "code": "const NodeScriptResource = preload(\"res://addons/nodescript/core/nodescript_resource.gd\")",
 "indent": 0,
-"line": 7,
+"line": 5,
 "name": "NodeScriptResource = preload(\"res",
 "type": "variable"
 }, {
-"code": "const NodeScriptSyncScript: Script = preload(\"res://addons/nodescript/editor/nodescript_sync.gd\")",
+"code": "const NodeScriptSync = preload(\"res://addons/nodescript/editor/nodescript_sync.gd\")",
 "indent": 0,
-"line": 8,
-"name": "NodeScriptSyncScript",
+"line": 6,
+"name": "NodeScriptSync = preload(\"res",
 "type": "variable"
 }, {
 "auto_spacing": false,
 "count": 1,
 "indent": 0,
-"line": 9,
+"line": 7,
 "manual_blank": true,
 "name": "blank_1",
 "type": "blank"
 }, {
-"code": "var nodescript_panel: Control",
-"indent": 0,
-"line": 10,
-"name": "nodescript_panel",
-"type": "variable"
-}, {
 "code": "var tree_dock: Control",
 "indent": 0,
-"line": 11,
+"line": 8,
 "name": "tree_dock",
-"type": "variable"
-}, {
-"code": "var inspector_dock: Control",
-"indent": 0,
-"line": 12,
-"name": "inspector_dock",
 "type": "variable"
 }, {
 "code": "var script_editor_ref: ScriptEditor",
 "indent": 0,
-"line": 13,
+"line": 9,
 "name": "script_editor_ref",
 "type": "variable"
 }, {
 "code": "var _current_script: Script",
 "indent": 0,
-"line": 14,
+"line": 10,
 "name": "_current_script",
 "type": "variable"
 }, {
 "code": "var _pending_script_for_autocreate: Script",
 "indent": 0,
-"line": 15,
+"line": 11,
 "name": "_pending_script_for_autocreate",
 "type": "variable"
 }, {
-"code": "var _is_refreshing_from_fs: bool = false",
+"code": "var _editor_ready: bool = false",
 "indent": 0,
-"line": 16,
-"name": "_is_refreshing_from_fs",
+"line": 12,
+"name": "_editor_ready",
 "type": "variable"
 }, {
-"code": "var _last_refresh_path: String = \"\"",
+"code": "var _ready_frame_count: int = 0",
 "indent": 0,
-"line": 17,
-"name": "_last_refresh_path",
+"line": 13,
+"name": "_ready_frame_count",
 "type": "variable"
 }, {
 "auto_spacing": false,
-"count": 2,
+"count": 1,
 "indent": 0,
-"line": 18,
+"line": 14,
 "manual_blank": true,
 "name": "blank_2",
 "type": "blank"
 }, {
+"code": "func show_clear_nodescript_files_dialog() -> void:",
+"indent": 0,
+"line": 15,
+"name": "show_clear_nodescript_files_dialog",
+"type": "function"
+}, {
 "code": "func _enter_tree() -> void:",
 "indent": 0,
-"line": 20,
+"line": 35,
 "name": "_enter_tree",
 "type": "function"
 }, {
 "code": "func _exit_tree() -> void:",
 "indent": 0,
-"line": 46,
+"line": 39,
 "name": "_exit_tree",
 "type": "function"
 }, {
-"auto_spacing": false,
-"count": 1,
+"code": "func _enable_plugin() -> void:",
 "indent": 0,
-"line": 73,
-"manual_blank": true,
-"name": "blank_3",
-"type": "blank"
+"line": 43,
+"name": "_enable_plugin",
+"type": "function"
 }, {
-"code": "func _setup_tools_menu() -> void:",
+"code": "func _disable_plugin() -> void:",
 "indent": 0,
-"line": 74,
-"name": "_setup_tools_menu",
+"line": 50,
+"name": "_disable_plugin",
+"type": "function"
+}, {
+"code": "func _mark_editor_ready() -> void:",
+"indent": 0,
+"line": 67,
+"name": "_mark_editor_ready",
 "type": "function"
 }, {
 "code": "func _on_clear_nodescript_files_pressed() -> void:",
 "indent": 0,
-"line": 78,
+"line": 72,
 "name": "_on_clear_nodescript_files_pressed",
 "type": "function"
 }, {
 "code": "func _perform_clear_nodescript_files() -> void:",
 "indent": 0,
-"line": 96,
+"line": 75,
 "name": "_perform_clear_nodescript_files",
 "type": "function"
 }, {
 "code": "func _delete_nodescript_files_recursive(path: String, deleted_files: Array) -> void:",
 "indent": 0,
-"line": 108,
+"line": 89,
 "name": "_delete_nodescript_files_recursive",
-"type": "function"
-}, {
-"auto_spacing": false,
-"count": 1,
-"indent": 0,
-"line": 137,
-"manual_blank": true,
-"name": "blank_4",
-"type": "blank"
-}, {
-"code": "func _has_main_screen() -> bool:",
-"indent": 0,
-"line": 138,
-"name": "_has_main_screen",
-"type": "function"
-}, {
-"code": "func _make_visible(visible: bool) -> void:",
-"indent": 0,
-"line": 143,
-"name": "_make_visible",
 "type": "function"
 }, {
 "code": "func _get_plugin_name() -> String:",
 "indent": 0,
-"line": 161,
+"line": 115,
 "name": "_get_plugin_name",
 "type": "function"
 }, {
 "code": "func _get_plugin_icon() -> Texture2D:",
 "indent": 0,
-"line": 166,
+"line": 119,
 "name": "_get_plugin_icon",
 "type": "function"
 }, {
-"auto_spacing": false,
-"count": 1,
-"indent": 0,
-"line": 172,
-"manual_blank": true,
-"name": "blank_5",
-"type": "blank"
-}, {
 "code": "func _setup_docks() -> void:",
 "indent": 0,
-"line": 173,
+"line": 124,
 "name": "_setup_docks",
 "type": "function"
 }, {
 "code": "func _deferred_restore_focus(control: Control) -> void:",
 "indent": 0,
-"line": 238,
+"line": 159,
 "name": "_deferred_restore_focus",
 "type": "function"
 }, {
 "code": "func _set_dock_tab_icon_from_list(control: Control, icon_names: Array) -> void:",
 "indent": 0,
-"line": 243,
+"line": 163,
 "name": "_set_dock_tab_icon_from_list",
 "type": "function"
 }, {
 "code": "func _set_dock_tab_icon_custom_or_list(control: Control, custom_path: String, fallback_icons: Array) -> void:",
 "indent": 0,
-"line": 255,
+"line": 174,
 "name": "_set_dock_tab_icon_custom_or_list",
 "type": "function"
 }, {
 "code": "func _connect_script_editor() -> void:",
 "indent": 0,
-"line": 266,
+"line": 184,
 "name": "_connect_script_editor",
-"type": "function"
-}, {
-"code": "func _connect_filesystem_signals() -> void:",
-"indent": 0,
-"line": 282,
-"name": "_connect_filesystem_signals",
 "type": "function"
 }, {
 "code": "func _on_script_changed(script: Script) -> void:",
 "indent": 0,
-"line": 288,
+"line": 196,
 "name": "_on_script_changed",
-"type": "function"
-}, {
-"code": "func _on_script_saved(script: Script) -> void:",
-"indent": 0,
-"line": 312,
-"name": "_on_script_saved",
-"type": "function"
-}, {
-"code": "func _on_filesystem_changed() -> void:",
-"indent": 0,
-"line": 317,
-"name": "_on_filesystem_changed",
 "type": "function"
 }, {
 "code": "func _get_nodescript_path(script: Script) -> String:",
 "indent": 0,
-"line": 322,
+"line": 233,
 "name": "_get_nodescript_path",
-"type": "function"
-}, {
-"code": "func _show_docks() -> void:",
-"indent": 0,
-"line": 339,
-"name": "_show_docks",
-"type": "function"
-}, {
-"code": "func _hide_docks() -> void:",
-"indent": 0,
-"line": 344,
-"name": "_hide_docks",
 "type": "function"
 }, {
 "code": "func _load_script_in_docks(script: Script) -> void:",
 "indent": 0,
-"line": 349,
+"line": 249,
 "name": "_load_script_in_docks",
 "type": "function"
 }, {
 "code": "func _clear_dock_contents() -> void:",
 "indent": 0,
-"line": 363,
+"line": 260,
 "name": "_clear_dock_contents",
 "type": "function"
 }, {
 "code": "func _on_dock_visibility_changed() -> void:",
 "indent": 0,
-"line": 380,
+"line": 269,
 "name": "_on_dock_visibility_changed",
 "type": "function"
 }, {
 "code": "func _attempt_autocreate_if_visible() -> void:",
 "indent": 0,
-"line": 387,
+"line": 275,
 "name": "_attempt_autocreate_if_visible",
 "type": "function"
 }, {
 "code": "func _deferred_autocreate_nodescript(script: Script) -> void:",
 "indent": 0,
-"line": 397,
+"line": 284,
 "name": "_deferred_autocreate_nodescript",
 "type": "function"
 }, {
 "code": "func _ensure_nodescript_resource(script: Script) -> String:",
 "indent": 0,
-"line": 410,
+"line": 297,
 "name": "_ensure_nodescript_resource",
-"type": "function"
-}, {
-"code": "func _on_tree_item_selected(item_type: String, item_name: String, item_data: Dictionary) -> void:",
-"indent": 0,
-"line": 441,
-"name": "_on_tree_item_selected",
 "type": "function"
 }, {
 "code": "func _refresh_tree_dock() -> void:",
 "indent": 0,
-"line": 449,
+"line": 332,
 "name": "_refresh_tree_dock",
-"type": "function"
-}, {
-"code": "func _refresh_current_from_source() -> void:",
-"indent": 0,
-"line": 457,
-"name": "_refresh_current_from_source",
-"type": "function"
-}, {
-"code": "func _clear_refresh_flag() -> void:",
-"indent": 0,
-"line": 473,
-"name": "_clear_refresh_flag",
-"type": "function"
-}, {
-"code": "func _safe_remove_dock(control: Control) -> void:",
-"indent": 0,
-"line": 478,
-"name": "_safe_remove_dock",
-"type": "function"
-}, {
-"code": "func _on_tree_item_activated(item_type: String, item_name: String) -> void:",
-"indent": 0,
-"line": 485,
-"name": "_on_tree_item_activated",
 "type": "function"
 }]
 },
@@ -2232,27 +1555,7 @@ body = {
 "class": "",
 "const": true,
 "export": false,
-"name": "NodeScriptPanelScene",
-"onready": false,
-"region": "",
-"scope_line": 0,
-"type": "PackedScene",
-"value": "preload(\"res"
-}, {
-"class": "",
-"const": true,
-"export": false,
 "name": "NodeScriptTreeDockScript",
-"onready": false,
-"region": "",
-"scope_line": 0,
-"type": "Script",
-"value": "preload(\"res"
-}, {
-"class": "",
-"const": true,
-"export": false,
-"name": "NodeScriptInspectorDockScript",
 "onready": false,
 "region": "",
 "scope_line": 0,
@@ -2272,37 +1575,17 @@ body = {
 "class": "",
 "const": true,
 "export": false,
-"name": "NodeScriptSyncScript",
+"name": "NodeScriptSync = preload(\"res",
 "onready": false,
 "region": "",
 "scope_line": 0,
-"type": "Script",
-"value": "preload(\"res"
-}, {
-"class": "",
-"const": false,
-"export": false,
-"name": "nodescript_panel",
-"onready": false,
-"region": "",
-"scope_line": 0,
-"type": "Control",
+"type": "//addons/nodescript/editor/nodescript_sync.gd\")",
 "value": ""
 }, {
 "class": "",
 "const": false,
 "export": false,
 "name": "tree_dock",
-"onready": false,
-"region": "",
-"scope_line": 0,
-"type": "Control",
-"value": ""
-}, {
-"class": "",
-"const": false,
-"export": false,
-"name": "inspector_dock",
 "onready": false,
 "region": "",
 "scope_line": 0,
@@ -2342,7 +1625,7 @@ body = {
 "class": "",
 "const": false,
 "export": false,
-"name": "_is_refreshing_from_fs",
+"name": "_editor_ready",
 "onready": false,
 "region": "",
 "scope_line": 0,
@@ -2352,11 +1635,11 @@ body = {
 "class": "",
 "const": false,
 "export": false,
-"name": "_last_refresh_path",
+"name": "_ready_frame_count",
 "onready": false,
 "region": "",
 "scope_line": 0,
-"type": "String",
-"value": "\"\""
+"type": "int",
+"value": "0"
 }]
 }

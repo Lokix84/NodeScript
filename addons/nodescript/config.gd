@@ -9,15 +9,12 @@ const CONFIG_PATH := "res://addons/nodescript/config.cfg"
 const CONFIG_SECTION := "nodescript"
 
 const DEFAULTS := {
-	"auto_sort_tree": false,
-	"show_enum_values_in_tree": false,
+	"show_enum_values_in_tree": true,
 	"log_level": 1, # 0 = silent, 1 = minimal, 2 = verbose
 	"tree_display_mode": 1, # 0 grouped/sorted, 1 true order, 2 flat sorted
 	"auto_space_strategy": "between_types", # none, between_types, after_groups
 	"auto_space_enabled": true,
-	"consolidate_blank_lines": true,
-	"consolidate_blank_lines_visual": true,
-	"show_blank_rows": true
+	"consolidate_blank_lines": true
 }
 
 # Auto-space strategy modes:
@@ -101,21 +98,9 @@ static func set_consolidate_blank_lines(enabled: bool) -> void:
 	set_bool("consolidate_blank_lines", enabled)
 
 
-static func get_consolidate_blank_lines_visual() -> bool:
-	return get_bool("consolidate_blank_lines_visual", DEFAULTS["consolidate_blank_lines_visual"])
-
-
-static func set_consolidate_blank_lines_visual(enabled: bool) -> void:
-	set_bool("consolidate_blank_lines_visual", enabled)
-
-
-static func get_show_blank_rows() -> bool:
-	return get_bool("show_blank_rows", DEFAULTS["show_blank_rows"])
-
-
-static func set_show_blank_rows(enabled: bool) -> void:
-	set_bool("show_blank_rows", enabled)
-
-
 static func set_tree_display_mode(mode: int) -> void:
 	set_int("tree_display_mode", mode)
+
+
+static func get_tree_display_mode() -> int:
+	return get_int("tree_display_mode", DEFAULTS.get("tree_display_mode", 1))

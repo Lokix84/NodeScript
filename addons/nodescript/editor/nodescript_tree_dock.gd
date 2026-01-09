@@ -1,10 +1,18 @@
 @tool
 extends VBoxContainer
+class_name NodeScriptTreeDockContent
 
 const NodeScriptConfig = preload("res://addons/nodescript/config.gd")
 const NodeScriptUtils = preload("res://addons/nodescript/utils/nodescript_utils.gd")
 const NodeScriptTreeUtils = preload("res://addons/nodescript/utils/tree_utils.gd")
 const _NodeScriptSyncScript = preload("res://addons/nodescript/editor/nodescript_sync.gd")
+
+const DISPLAY_GROUPED_BY_TYPE := 0
+const DISPLAY_TRUE_STRUCTURE := 1
+const DISPLAY_ALPHABETICAL := 2
+
+signal item_selected(item_type: String, item_name: String, metadata: Dictionary)
+signal item_activated(item_type: String, item_name: String, payload: Dictionary)
 
 func _init() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -19,38 +27,20 @@ var tree: Tree
 var filter_edit: LineEdit
 var tree_filter_text: String = ""
 var loading_panel: Panel
-
-# Toolbar buttons
-var add_item_button: TextureButton
 var options_button: TextureButton
-var add_item_menu: PopupMenu
 var options_menu: PopupMenu
 var tree_context_menu: PopupMenu
 
-# Settings
-# Signals
-signal item_selected(item_type: String, item_name: String, metadata: Dictionary)
-signal item_activated(item_type: String, item_name: String, payload: Dictionary)
 var show_enum_values_in_tree: bool = true
-var auto_space_enabled: bool = true
-var consolidate_blank_lines_visual: bool = true
-var show_blank_rows: bool = true
+var display_mode: int = DISPLAY_TRUE_STRUCTURE
+
 
 func _ready() -> void:
-	# Toolbar
 	var toolbar = HBoxContainer.new()
 	toolbar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	toolbar.alignment = BoxContainer.ALIGNMENT_CENTER
 	add_child(toolbar)
-	
-	# Add button (on left)
-	add_item_button = TextureButton.new()
-	add_item_button.tooltip_text = "Add item"
-	add_item_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	add_item_button.pressed.connect(_on_add_item_pressed)
-	toolbar.add_child(add_item_button)
-	
-	# Filter (in middle, expands)
+
 	filter_edit = LineEdit.new()
 	filter_edit.placeholder_text = "Filter..."
 	filter_edit.clear_button_enabled = true
@@ -58,29 +48,23 @@ func _ready() -> void:
 	filter_edit.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	filter_edit.text_changed.connect(_on_filter_changed)
 	toolbar.add_child(filter_edit)
-	
-	# Options button (on right)
+
 	options_button = TextureButton.new()
-	options_button.tooltip_text = "Options"
+	options_button.tooltip_text = "Display options"
 	options_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	options_button.pressed.connect(_on_options_button_pressed)
 	toolbar.add_child(options_button)
-	
-	# Tree
+
 	tree = Tree.new()
 	tree.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	tree.hide_root = true
 	tree.item_selected.connect(_on_tree_item_selected)
 	tree.item_activated.connect(_on_tree_item_activated)
-	tree.gui_input.connect(_on_tree_gui_input)
+	tree.gui_input.connect(Callable(self, "_on_tree_gui_input"))
 	add_child(tree)
-	
-	# Loading panel (overlay, initially hidden)
+
 	_setup_loading_panel()
-	
-	# Setup menus
-	_setup_add_item_menu()
 	_setup_options_menu()
 	_setup_tree_context_menu()
 	_load_config_settings()
@@ -95,24 +79,21 @@ func load_script(script: Script) -> void:
 		clear_tree()
 		_hide_loading_panel()
 		return
-	
+
 	active_script = script
-	
-	# Show loading panel while resolving
 	_show_loading_panel()
-	
+
 	if not sync:
 		sync = _NodeScriptSyncScript.new()
-	sync.load_for_script(script)
+	var ok: bool = sync.load_for_script(script)
 	if not sync or not sync.nodescript:
+		if not ok:
+			push_error("NodeScript: Failed to load NodeScript data for %s" % (script.resource_path if script else ""))
 		clear_tree()
 		_hide_loading_panel()
 		return
-	
-	# Build tree
+
 	_build_tree()
-	
-	# Hide loading panel when done
 	_hide_loading_panel()
 
 
@@ -124,19 +105,21 @@ func clear_tree() -> void:
 func _build_tree() -> void:
 	if not tree or not sync or not sync.nodescript:
 		return
-	
+
 	tree.clear()
 	_ensure_order_map()
-	
+
 	var root = tree.create_item()
 	var script_item = tree.create_item(root)
 	script_item.set_text(0, _get_script_display_name())
 	script_item.set_icon(0, _get_editor_icon("Script", "File"))
 	script_item.set_metadata(0, {"type": "script"})
 	script_item.collapsed = false
-	
-	# Build true structure
-	_build_scope_items(script_item, "", "")
+
+	if display_mode == DISPLAY_GROUPED_BY_TYPE:
+		_build_grouped_items(script_item)
+	else:
+		_build_scope_items(script_item, "", "")
 
 
 func _ensure_order_map() -> void:
@@ -149,55 +132,27 @@ func _ensure_order_map() -> void:
 func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> void:
 	if not parent_item or not sync or not sync.nodescript:
 		return
-	
-	var order := _scope_order_for(cls, region)
-	var added: Dictionary = {}
-	var last_was_blank := false
-	var last_blank_item: TreeItem = null
-	
+
+	var order := _visual_entries_for_scope(cls, region)
 	for entry in order:
 		if typeof(entry) != TYPE_DICTIONARY:
 			continue
-		
+
 		var kind := str(entry.get("type", ""))
 		var name := str(entry.get("name", entry.get("id", "")))
-		if kind != "blank":
-			last_was_blank = false
-			last_blank_item = null
-		
+		var line_num := int(entry.get("line", 0))
+
 		match kind:
-			"blank":
-				if not show_blank_rows:
-					continue
-				var entry_count := int(entry.get("count", 1))
-				if consolidate_blank_lines_visual and last_was_blank:
-					if last_blank_item:
-						var meta := last_blank_item.get_metadata(0)
-						if typeof(meta) == TYPE_DICTIONARY:
-							var prev_count := int(meta.get("count", 1))
-							meta["count"] = prev_count + (entry_count if entry_count > 0 else 1)
-							last_blank_item.set_metadata(0, meta)
-					continue
-				if not _matches_filter(""):
-					continue
-				var line_num := int(entry.get("line", 0))
-				var blank_item := NodeScriptTreeUtils.create_item(tree, parent_item, " ", {"type": "blank", "name": name, "region": region, "class": cls, "line": line_num, "count": entry_count}, null)
-				blank_item.set_custom_color(0, Color(0.6, 0.6, 0.6, 0.5))
-				blank_item.set_selectable(0, true)
-				added[_order_key(kind, name)] = true
-				last_was_blank = true
-				last_blank_item = blank_item
-			
 			"region":
 				var region_data := _find_region_entry(name, cls, region)
 				if region_data.is_empty():
 					continue
-				if not _matches_filter(name):
+				var has_descendant := _scope_has_filter_match(cls, name)
+				if not _matches_filter(name) and not has_descendant:
 					continue
-				var region_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "region", "name": name, "class": cls, "region": region}, _get_editor_icon(_get_region_icon_name(), "Folder"))
-				added[_order_key(kind, name)] = true
+				var region_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "region", "name": name, "class": cls, "region": region, "line": line_num}, _get_editor_icon(_get_region_icon_name(), "Folder"))
 				_build_scope_items(region_item, cls, name)
-			
+
 			"class":
 				if cls != "":
 					continue
@@ -207,13 +162,13 @@ func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> v
 				var cls_region := _entry_region(class_data)
 				if cls_region != region:
 					continue
-				if not _matches_filter(name):
+				var has_descendant_class := _scope_has_filter_match(name, cls_region)
+				if not _matches_filter(name) and not has_descendant_class:
 					continue
-				var class_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "class", "name": name, "region": region}, _get_editor_icon("MiniObject", "MiniObject"))
+				var class_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "class", "name": name, "region": region, "line": line_num}, _get_editor_icon("MiniObject", "MiniObject"))
 				class_item.collapsed = false
-				added[_order_key(kind, name)] = true
 				_build_scope_items(class_item, name, cls_region)
-			
+
 			"signal":
 				var sig_entry := _signal_entry(name)
 				if sig_entry.is_empty():
@@ -222,10 +177,8 @@ func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> v
 					continue
 				if not _matches_filter(name):
 					continue
-				NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "signal", "name": name, "region": region, "class": cls}, _get_editor_icon("Signal", "Signal"))
-				added[_order_key(kind, name)] = true
-				last_was_blank = false
-			
+				NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "signal", "name": name, "region": region, "class": cls, "line": line_num}, _get_editor_icon("Signal", "Signal"))
+
 			"variable":
 				var var_entry := _variable_entry(name)
 				if var_entry.is_empty():
@@ -235,10 +188,8 @@ func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> v
 				if not _matches_filter(name):
 					continue
 				var icon_name := _variable_type_icon(var_entry)
-				NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "variable", "name": name, "region": region, "class": cls}, _get_editor_icon(icon_name, "MemberProperty"))
-				added[_order_key(kind, name)] = true
-				last_was_blank = false
-			
+				NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "variable", "name": name, "region": region, "class": cls, "line": line_num}, _get_editor_icon(icon_name, "MemberProperty"))
+
 			"enum":
 				var enum_entry := _enum_entry(name)
 				if enum_entry.is_empty():
@@ -247,8 +198,7 @@ func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> v
 					continue
 				if not _matches_filter(name):
 					continue
-				var enum_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "enum", "name": name, "region": region, "class": cls}, _get_editor_icon(_get_enum_icon_name(), _get_enum_icon_name()))
-				added[_order_key(kind, name)] = true
+				var enum_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "enum", "name": name, "region": region, "class": cls, "line": line_num}, _get_editor_icon(_get_enum_icon_name(), _get_enum_icon_name()))
 				if show_enum_values_in_tree:
 					var values: Array = _enum_values(enum_entry)
 					if typeof(values) == TYPE_ARRAY and not values.is_empty():
@@ -256,8 +206,7 @@ func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> v
 							if not _matches_filter(str(value_name)):
 								continue
 							NodeScriptTreeUtils.create_item(tree, enum_item, str(value_name), {"type": "enum_value", "name": value_name, "enum": name}, _get_editor_icon(_get_enum_icon_name(), _get_enum_icon_name()))
-				last_was_blank = false
-			
+
 			"function":
 				var fn_index := _function_index_by_name(name)
 				if fn_index == -1:
@@ -267,10 +216,180 @@ func _build_scope_items(parent_item: TreeItem, cls: String, region: String) -> v
 					continue
 				if not _matches_filter(name):
 					continue
-				var func_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "function", "name": name, "index": fn_index, "region": region, "class": cls}, _get_editor_icon("MemberMethod", "MemberMethod"))
+				var func_item := NodeScriptTreeUtils.create_item(tree, parent_item, name, {"type": "function", "name": name, "index": fn_index, "region": region, "class": cls, "line": line_num}, _get_editor_icon("MemberMethod", "MemberMethod"))
 				func_item.collapsed = true
-				added[_order_key(kind, name)] = true
-				last_was_blank = false
+
+
+func _visual_entries_for_scope(cls: String, region: String) -> Array:
+	var entries: Array = []
+	for entry in _scope_order_for(cls, region):
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		if str(entry.get("type", "")) == "blank":
+			continue
+		entries.append(entry)
+
+	match display_mode:
+		DISPLAY_TRUE_STRUCTURE:
+			return entries
+		DISPLAY_ALPHABETICAL:
+			entries.sort_custom(Callable(self, "_sort_entries_by_name"))
+			return entries
+		DISPLAY_GROUPED_BY_TYPE:
+			var grouped: Dictionary = {}
+			for entry in entries:
+				var t := str(entry.get("type", ""))
+				if not grouped.has(t):
+					grouped[t] = []
+				grouped[t].append(entry)
+
+			var type_order := [
+				"region",
+				"class",
+				"signal",
+				"variable",
+				"enum",
+				"function"
+			]
+			var ordered: Array = []
+
+			for t in type_order:
+				if grouped.has(t):
+					var arr: Array = grouped[t]
+					arr.sort_custom(Callable(self, "_sort_entries_by_name"))
+					ordered.append_array(arr)
+
+			for t in grouped.keys():
+				if t in type_order:
+					continue
+				var arr: Array = grouped[t]
+				arr.sort_custom(Callable(self, "_sort_entries_by_name"))
+				ordered.append_array(arr)
+
+			return ordered
+
+	return entries
+
+
+func _all_visual_entries() -> Array:
+	var entries: Array = []
+	if not sync or not sync.nodescript:
+		return entries
+	var order_map: Dictionary = sync.nodescript.body.get("order", {})
+	for key in order_map.keys():
+		var scope_entries = order_map[key]
+		if typeof(scope_entries) != TYPE_ARRAY:
+			continue
+		for entry in scope_entries:
+			if typeof(entry) != TYPE_DICTIONARY:
+				continue
+			if str(entry.get("type", "")) == "blank":
+				continue
+			entries.append(entry)
+	return entries
+
+
+func _build_grouped_items(parent_item: TreeItem) -> void:
+	if not parent_item:
+		return
+
+	var grouped: Dictionary = {}
+	for entry in _all_visual_entries():
+		var kind := str(entry.get("type", ""))
+		var name := str(entry.get("name", entry.get("id", "")))
+		if name.is_empty():
+			continue
+		if not _matches_filter(name):
+			continue
+		if not grouped.has(kind):
+			grouped[kind] = []
+		grouped[kind].append(entry)
+
+	var type_order := [
+		"region",
+		"class",
+		"signal",
+		"variable",
+		"enum",
+		"function"
+	]
+
+	for kind in type_order:
+		if not grouped.has(kind):
+			continue
+		var items: Array = grouped[kind]
+		items.sort_custom(Callable(self, "_sort_entries_by_name"))
+
+		var group_item := NodeScriptTreeUtils.create_item(tree, parent_item, _type_label(kind), {"type": "group", "group": kind}, _type_icon(kind))
+		group_item.set_selectable(0, false)
+
+		for entry in items:
+			var name := str(entry.get("name", entry.get("id", "")))
+			var line_num := int(entry.get("line", 0))
+			match kind:
+				"region":
+					NodeScriptTreeUtils.create_item(tree, group_item, name, {"type": "region", "name": name, "region": str(entry.get("region", "")), "class": str(entry.get("class", "")), "line": line_num}, _get_editor_icon(_get_region_icon_name(), "Folder"))
+				"class":
+					NodeScriptTreeUtils.create_item(tree, group_item, name, {"type": "class", "name": name, "region": str(entry.get("region", "")), "class": str(entry.get("class", "")), "line": line_num}, _get_editor_icon("MiniObject", "MiniObject"))
+				"signal":
+					NodeScriptTreeUtils.create_item(tree, group_item, name, {"type": "signal", "name": name, "region": str(entry.get("region", "")), "class": str(entry.get("class", "")), "line": line_num}, _get_editor_icon("Signal", "Signal"))
+				"variable":
+					var icon_name := _variable_type_icon(entry)
+					NodeScriptTreeUtils.create_item(tree, group_item, name, {"type": "variable", "name": name, "region": str(entry.get("region", "")), "class": str(entry.get("class", "")), "line": line_num}, _get_editor_icon(icon_name, "MemberProperty"))
+				"enum":
+					var enum_item := NodeScriptTreeUtils.create_item(tree, group_item, name, {"type": "enum", "name": name, "region": str(entry.get("region", "")), "class": str(entry.get("class", "")), "line": line_num}, _get_editor_icon(_get_enum_icon_name(), _get_enum_icon_name()))
+					if show_enum_values_in_tree:
+						var values: Array = _enum_values(_enum_entry(name))
+						if typeof(values) == TYPE_ARRAY and not values.is_empty():
+							for value_name in values:
+								if not _matches_filter(str(value_name)):
+									continue
+								NodeScriptTreeUtils.create_item(tree, enum_item, str(value_name), {"type": "enum_value", "name": value_name, "enum": name}, _get_editor_icon(_get_enum_icon_name(), _get_enum_icon_name()))
+				"function":
+					var fn_index := _function_index_by_name(name)
+					NodeScriptTreeUtils.create_item(tree, group_item, name, {"type": "function", "name": name, "index": fn_index, "region": str(entry.get("region", "")), "class": str(entry.get("class", "")), "line": line_num}, _get_editor_icon("MemberMethod", "MemberMethod"))
+
+
+func _type_label(kind: String) -> String:
+	match kind:
+		"region":
+			return "Regions"
+		"class":
+			return "Classes"
+		"signal":
+			return "Signals"
+		"variable":
+			return "Variables"
+		"enum":
+			return "Enums"
+		"function":
+			return "Functions"
+	return kind.capitalize()
+
+
+func _type_icon(kind: String) -> Texture2D:
+	match kind:
+		"region":
+			return _get_editor_icon(_get_region_icon_name(), "Folder")
+		"class":
+			return _get_editor_icon("MiniObject", "MiniObject")
+		"signal":
+			return _get_editor_icon("Signal", "Signal")
+		"variable":
+			return _get_editor_icon("MemberProperty", "MemberProperty")
+		"enum":
+			return _get_editor_icon(_get_enum_icon_name(), _get_enum_icon_name())
+		"function":
+			return _get_editor_icon("MemberMethod", "MemberMethod")
+	return _get_editor_icon("Node", "Node")
+
+
+func _sort_entries_by_name(a: Dictionary, b: Dictionary) -> bool:
+	var name_a := str(a.get("name", a.get("id", ""))).to_lower()
+	var name_b := str(b.get("name", b.get("id", ""))).to_lower()
+	if name_a == name_b:
+		return str(a.get("type", "")).to_lower() < str(b.get("type", "")).to_lower()
+	return name_a < name_b
 
 
 func _scope_order_for(cls: String, region: String) -> Array:
@@ -287,10 +406,6 @@ func _scope_order_for(cls: String, region: String) -> Array:
 
 func _scope_key(cls: String, region: String) -> String:
 	return str(cls) + "|" + str(region)
-
-
-func _order_key(kind: String, name: String) -> String:
-	return kind + ":" + name
 
 
 func _find_region_entry(name: String, cls: String, region: String) -> Dictionary:
@@ -372,43 +487,17 @@ func _get_script_display_name() -> String:
 	return "Script"
 
 
-func _setup_add_item_menu() -> void:
-	if add_item_menu:
-		return
-	add_item_menu = PopupMenu.new()
-	add_item_menu.name = "AddItemMenu"
-	add_item_menu.add_item("Signal", 1)
-	add_item_menu.set_item_icon(0, _get_editor_icon("MemberSignal", "Signal"))
-	add_item_menu.add_item("Variable", 2)
-	add_item_menu.set_item_icon(1, _get_editor_icon("MemberProperty", "MemberProperty"))
-	add_item_menu.add_item("Enum", 3)
-	add_item_menu.set_item_icon(2, _get_editor_icon("Enumeration", "Enum"))
-	add_item_menu.add_item("Function", 4)
-	add_item_menu.set_item_icon(3, _get_editor_icon("MemberMethod", "MemberMethod"))
-	add_item_menu.add_item("Region", 5)
-	add_item_menu.set_item_icon(4, _get_editor_icon("Group", "Folder"))
-	add_item_menu.add_item("Class", 6)
-	add_item_menu.set_item_icon(5, _get_editor_icon("MiniObject", "Node"))
-	add_item_menu.id_pressed.connect(_on_add_item_menu_id_pressed)
-	add_child(add_item_menu)
-	if add_item_button:
-		add_item_button.texture_normal = _get_editor_icon("Add", "Add")
-
-
 func _setup_options_menu() -> void:
 	if options_menu:
 		return
 	options_menu = PopupMenu.new()
 	options_menu.name = "OptionsMenu"
-	options_menu.add_check_item("Show enum values", 0)
-	options_menu.set_item_checked(0, show_enum_values_in_tree)
-	options_menu.add_check_item("Auto space between types", 1)
-	options_menu.set_item_checked(1, auto_space_enabled)
-	options_menu.add_check_item("Show blank rows (visual)", 2)
-	options_menu.set_item_checked(2, show_blank_rows)
-	options_menu.add_check_item("Consolidate blank spaces (visual)", 3)
-	options_menu.set_item_checked(3, consolidate_blank_lines_visual)
 	options_menu.hide_on_checkable_item_selection = true
+	options_menu.add_radio_check_item("True Structure", DISPLAY_TRUE_STRUCTURE)
+	options_menu.add_radio_check_item("Alphabetical", DISPLAY_ALPHABETICAL)
+	options_menu.add_radio_check_item("Grouped by Types", DISPLAY_GROUPED_BY_TYPE)
+	options_menu.add_separator()
+	options_menu.add_item("Delete all .nodescript.tres files...", 999)
 	options_menu.id_pressed.connect(_on_options_menu_id_pressed)
 	add_child(options_menu)
 	if options_button:
@@ -425,23 +514,21 @@ func _setup_tree_context_menu() -> void:
 
 
 func _setup_loading_panel() -> void:
-	# Create semi-transparent overlay panel
 	loading_panel = Panel.new()
 	loading_panel.name = "LoadingPanel"
 	loading_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	loading_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	loading_panel.modulate = Color(0, 0, 0, 0.7) # Semi-transparent dark overlay
+	loading_panel.modulate = Color(0, 0, 0, 0.7)
 	loading_panel.visible = false
 	add_child(loading_panel)
-	move_child(loading_panel, -1) # Move to front (above tree)
-	
-	# Add label in center
+	move_child(loading_panel, -1)
+
 	var vbox = VBoxContainer.new()
 	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	loading_panel.add_child(vbox)
-	
+
 	var label = Label.new()
 	label.text = "Loading Nodescript"
 	label.add_theme_font_size_override("font_size", 18)
@@ -461,64 +548,31 @@ func _hide_loading_panel() -> void:
 
 
 func _load_config_settings() -> void:
-	show_enum_values_in_tree = NodeScriptConfig.get_setting("show_enum_values_in_tree", true)
-	auto_space_enabled = NodeScriptConfig.get_auto_space_enabled()
-	show_blank_rows = NodeScriptConfig.get_show_blank_rows()
-	consolidate_blank_lines_visual = NodeScriptConfig.get_consolidate_blank_lines_visual()
-	consolidate_blank_lines_visual = NodeScriptConfig.get_setting("consolidate_blank_lines", true)
-	show_blank_rows = NodeScriptConfig.get_setting("show_blank_rows", true)
-
-
-func _on_add_item_pressed() -> void:
-	if add_item_menu:
-		add_item_menu.popup(Rect2i(add_item_button.global_position + Vector2(0, add_item_button.size.y), Vector2i(200, 0)))
+	show_enum_values_in_tree = bool(NodeScriptConfig.get_setting("show_enum_values_in_tree", true))
+	var mode := NodeScriptConfig.get_tree_display_mode()
+	if not [DISPLAY_GROUPED_BY_TYPE, DISPLAY_TRUE_STRUCTURE, DISPLAY_ALPHABETICAL].has(mode):
+		mode = DISPLAY_TRUE_STRUCTURE
+	display_mode = mode
 
 
 func _on_options_button_pressed() -> void:
-	if options_menu:
-		# Update checkmarks
-		options_menu.set_item_checked(0, show_enum_values_in_tree)
-		options_menu.set_item_checked(1, auto_space_enabled)
-		options_menu.set_item_checked(2, show_blank_rows)
-		options_menu.set_item_checked(3, consolidate_blank_lines_visual)
-		options_menu.popup(Rect2i(options_button.global_position + Vector2(0, options_button.size.y), Vector2i(200, 0)))
-
-
-func _on_add_item_menu_id_pressed(id: int) -> void:
-	# Emit signal to inspector dock to handle creation
-	match id:
-		1: # Signal
-			item_activated.emit("signal_add", "", {})
-		2: # Variable
-			item_activated.emit("variable_add", "", {})
-		3: # Enum
-			item_activated.emit("enum_add", "", {})
-		4: # Function
-			item_activated.emit("function_add", "", {})
-		5: # Region
-			item_activated.emit("region_add", "", {})
-		6: # Class
-			item_activated.emit("class_add", "", {})
+	if not options_menu:
+		return
+	for i in range(options_menu.get_item_count()):
+		if options_menu.is_item_checkable(i):
+			var id := options_menu.get_item_id(i)
+			options_menu.set_item_checked(i, id == display_mode)
+	options_menu.popup(Rect2i(options_button.global_position + Vector2(0, options_button.size.y), Vector2i(220, 0)))
 
 
 func _on_options_menu_id_pressed(id: int) -> void:
-	match id:
-		0: # Show enum values
-			show_enum_values_in_tree = !show_enum_values_in_tree
-			NodeScriptConfig.set_setting("show_enum_values_in_tree", show_enum_values_in_tree)
-			_build_tree()
-		1: # Auto space
-			auto_space_enabled = !auto_space_enabled
-			NodeScriptConfig.set_auto_space_enabled(auto_space_enabled)
-			_build_tree()
-		2: # Show blank rows (visual)
-			show_blank_rows = !show_blank_rows
-			NodeScriptConfig.set_show_blank_rows(show_blank_rows)
-			_build_tree()
-		3: # Consolidate blank lines (visual)
-			consolidate_blank_lines_visual = !consolidate_blank_lines_visual
-			NodeScriptConfig.set_consolidate_blank_lines_visual(consolidate_blank_lines_visual)
-			_build_tree()
+	if not [DISPLAY_GROUPED_BY_TYPE, DISPLAY_TRUE_STRUCTURE, DISPLAY_ALPHABETICAL].has(id):
+		if id == 999 and editor_plugin and editor_plugin.has_method("show_clear_nodescript_files_dialog"):
+			editor_plugin.show_clear_nodescript_files_dialog()
+		return
+	display_mode = id
+	NodeScriptConfig.set_tree_display_mode(display_mode)
+	_build_tree()
 
 
 func _matches_filter(text: String) -> bool:
@@ -527,86 +581,54 @@ func _matches_filter(text: String) -> bool:
 	return text.to_lower().find(tree_filter_text) != -1
 
 
+func _scope_has_filter_match(cls: String, region: String) -> bool:
+	# If no filter, everything matches.
+	if tree_filter_text.is_empty():
+		return true
+
+	var entries := _scope_order_for(cls, region)
+	for entry in entries:
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		var name := str(entry.get("name", entry.get("id", "")))
+		if _matches_filter(name):
+			return true
+		var kind := str(entry.get("type", ""))
+		if kind == "region":
+			if _scope_has_filter_match(cls, name):
+				return true
+		elif kind == "class":
+			var class_entry := _find_class_entry(name)
+			var cls_region := _entry_region(class_entry)
+			if _scope_has_filter_match(name, cls_region):
+				return true
+	return false
+
+
 func _on_tree_gui_input(event: InputEvent) -> void:
-	# Handle right-click for context menu
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		# Get the item at mouse position and select it
 		var mouse_pos = tree.get_local_mouse_position()
 		var item_at_pos = tree.get_item_at_position(mouse_pos)
 		if item_at_pos:
 			item_at_pos.select(0)
-		
+
 		var selected = tree.get_selected()
 		if not selected:
 			return
-		
+
 		var metadata = selected.get_metadata(0)
 		if not metadata:
 			return
-		
+
 		var item_type = str(metadata.get("type", ""))
-		var item_name = str(metadata.get("name", ""))
-		
-		# Build context menu based on item type
+		if item_type == "script" or item_type == "group":
+			return
+
 		tree_context_menu.clear()
-		
-		# All items except blanks can jump to line
-		if item_type != "blank" and item_type != "script":
-			tree_context_menu.add_item("Jump to Line", 0)
-			tree_context_menu.set_item_icon(0, _get_editor_icon("ArrowRight", "Forward"))
-			tree_context_menu.add_separator()
-		
-		# Editable items
-		if item_type in ["function", "variable", "signal", "enum", "region", "class"]:
-			tree_context_menu.add_item("Edit", 1)
-			tree_context_menu.set_item_icon(tree_context_menu.get_item_count() - 1, _get_editor_icon("Edit", "Edit"))
-			tree_context_menu.add_item("Delete", 2)
-			tree_context_menu.set_item_icon(tree_context_menu.get_item_count() - 1, _get_editor_icon("Remove", "Remove"))
-		
-		if tree_context_menu.item_count > 0:
-			# Store metadata for handler
-			tree_context_menu.set_meta("item_metadata", metadata)
-			var global_pos := Vector2i((tree.get_screen_position() + mouse_pos).round())
-			tree_context_menu.reset_size()
-			tree_context_menu.position = global_pos
-			tree_context_menu.popup()
-
-
-func _on_tree_item_mouse_selected(position: Vector2, mouse_button_index: int) -> void:
-	if mouse_button_index != MOUSE_BUTTON_RIGHT:
-		return
-	
-	var selected = tree.get_selected()
-	if not selected:
-		return
-	
-	var metadata = selected.get_metadata(0)
-	if not metadata:
-		return
-	
-	var item_type = str(metadata.get("type", ""))
-	var item_name = str(metadata.get("name", ""))
-	
-	# Build context menu based on item type
-	tree_context_menu.clear()
-	
-	# All items except blanks can jump to line
-	if item_type != "blank" and item_type != "script":
 		tree_context_menu.add_item("Jump to Line", 0)
 		tree_context_menu.set_item_icon(0, _get_editor_icon("ArrowRight", "Forward"))
-		tree_context_menu.add_separator()
-	
-	# Editable items
-	if item_type in ["function", "variable", "signal", "enum", "region", "class"]:
-		tree_context_menu.add_item("Edit", 1)
-		tree_context_menu.set_item_icon(tree_context_menu.get_item_count() - 1, _get_editor_icon("Edit", "Edit"))
-		tree_context_menu.add_item("Delete", 2)
-		tree_context_menu.set_item_icon(tree_context_menu.get_item_count() - 1, _get_editor_icon("Remove", "Remove"))
-	
-	if tree_context_menu.item_count > 0:
-		# Store metadata for handler
 		tree_context_menu.set_meta("item_metadata", metadata)
-		var global_pos := Vector2i((tree.get_screen_position() + position).round())
+		var global_pos := Vector2i((tree.get_screen_position() + mouse_pos).round())
 		tree_context_menu.reset_size()
 		tree_context_menu.position = global_pos
 		tree_context_menu.popup()
@@ -616,47 +638,32 @@ func _on_tree_context_menu_id_pressed(id: int) -> void:
 	var metadata = tree_context_menu.get_meta("item_metadata", {})
 	if metadata.is_empty():
 		return
-	
-	var item_type = str(metadata.get("type", ""))
-	var item_name = str(metadata.get("name", ""))
-	
-	match id:
-		0: # Jump to Line
-			_jump_to_line_in_editor(metadata)
-		1: # Edit
-			item_selected.emit(item_type, item_name, metadata)
-		2: # Delete
-			# Emit as activated with special delete action
-			item_activated.emit(item_type + "_delete", item_name, metadata)
+	if id == 0:
+		_jump_to_line_in_editor(metadata)
 
 
 func _jump_to_line_in_editor(metadata: Dictionary) -> void:
 	if not editor_plugin or not active_script:
 		return
-	
-	# Try to get line number from metadata or order entry
+
 	var line_num = int(metadata.get("line", 0))
-	
-	# If no line in metadata, try to find it from the order map
+
 	if line_num == 0:
 		var item_type = str(metadata.get("type", ""))
 		var item_name = str(metadata.get("name", ""))
 		var item_class = str(metadata.get("class", ""))
 		var item_region = str(metadata.get("region", ""))
-		
-		# Look up in order map
+
 		var order := _scope_order_for(item_class, item_region)
 		for entry in order:
 			if typeof(entry) == TYPE_DICTIONARY:
 				if str(entry.get("type", "")) == item_type and str(entry.get("name", "")) == item_name:
 					line_num = int(entry.get("line", 0))
 					break
-	
+
 	if line_num > 0:
-		# Line numbers in order map appear to be already 0-indexed for editor
 		editor_plugin.get_editor_interface().edit_script(active_script, line_num, 0)
 	else:
-		# Fallback: just open the script
 		editor_plugin.get_editor_interface().edit_script(active_script)
 
 
@@ -769,7 +776,7 @@ func _on_tree_item_selected() -> void:
 	var selected = tree.get_selected()
 	if not selected:
 		return
-	
+
 	var metadata = selected.get_metadata(0)
 	if metadata:
 		var item_type = str(metadata.get("type", ""))
@@ -781,14 +788,13 @@ func _on_tree_item_activated() -> void:
 	var selected = tree.get_selected()
 	if not selected:
 		return
-	
+
 	var metadata = selected.get_metadata(0)
 	if metadata:
 		var item_type = str(metadata.get("type", ""))
 		var item_name = str(metadata.get("name", ""))
-		
-		# Jump to line for all items except blanks and script root
-		if item_type != "blank" and item_type != "script":
+
+		if item_type != "script" and item_type != "group":
 			_jump_to_line_in_editor(metadata)
 		else:
 			item_activated.emit(item_type, item_name, {})

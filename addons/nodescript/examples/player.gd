@@ -2,13 +2,6 @@ extends CharacterBody2D
 
 signal died
 
-
-
-
-
-
-
-
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var sprite: Sprite2D = $Sprite
 #region Player
